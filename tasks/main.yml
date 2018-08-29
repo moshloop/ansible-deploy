@@ -1,0 +1,78 @@
+---
+- hosts: all
+  gather_facts: True
+  become: true
+  roles:
+    - extras
+  tasks:
+    - name: Include group vaulted files
+      include_vars:
+        dir: vault
+        extensions: ['']
+        files_matching: "{{item}}"
+      with_items: "{{group_names}}"
+      when: "'vault' | dir_exists"
+      delegate_to: localhost
+      tags:
+        - always
+
+    - name: Create directories
+      file:
+        state: directory
+        path: "{{item.key | dirname}}"
+      with_dict: "{{files | default({})}}"
+
+    - name: Copy vaulted files
+      copy:
+        dest: "{{item.key}}"
+        src: "{{item.value}}"
+      with_dict: "{{files | default({})}}"
+
+    - name: Create template directories
+      file:
+        state: directory
+        path: "{{item.key | dirname}}"
+      with_dict: "{{templates | default({})}}"
+
+    - name: Copy templated files
+      template:
+        dest: "{{item.key}}"
+        src: "{{item.value}}"
+      with_dict: "{{templates | default({})}}"
+
+    - name: Create mount points
+      file:
+          state: directory
+          path: "{{item.key}}"
+      with_dict: "{{mounts | default({})}}"
+
+    - name: Sysctls
+      sysctl:
+        name: "{{item.key}}"
+        value: "{{item.value}}"
+        state: present
+        sysctl_set: yes
+        state: present
+        reload: yes
+      with_dict: "{{sysctls}}"
+
+    - name: Mount mounts
+      mount:
+        path: "{{item.key}}"
+        src: "{{item.value}}"
+        fstype: nfs
+        state: mounted
+      with_dict: "{{mounts | default({})}}"
+
+    - name: Execute commands
+      shell: "{{item}}"
+      with_items: "{{commands}}"
+      when: commands is defined
+
+    - include_role:
+        name: docker_systemd_service
+
+    - name: "Including {{item}}"
+      include_tasks: "{{item}}.yml"
+      when: "(item + '.yml') | file_exists"
+      with_items: "{{group_names}}"
