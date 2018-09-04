@@ -1,0 +1,9 @@
+repo_url: https://github.com/moshloop/ansible-deploy/
+repo_name: Ansible Deploy
+site_name: Ansible Deploy
+theme: material
+markdown_extensions:
+  - admonition
+  - fenced_code
+  - codehilite:
+      linenums: true
