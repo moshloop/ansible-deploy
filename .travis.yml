@@ -3,4 +3,7 @@ python:
 - 3.6.5
 script:
   - pip install mkdocs mkdocs-material pymdown-extensions Pygments
+  - git remote remove origin
+  - git remote add origin "https://$GH_TOKEN@github.com/moshloop/ansible-deploy.git"
+  - git branch --set-upstream gh-pages origin/gh-pages
   - mkdocs gh-deploy
