@@ -4,7 +4,7 @@ Opionated role for creating shortcuts for various ansible tasks
 
 ## Targets
 
-### <img src="../images/ansible.png" height=24>  Ansible (Default)
+### <img src="images/ansible.png" height=24>  Ansible (Default)
 | Option           | Description                                  | Support |
 | ---------------- | -------------------------------------------- | -------- |
 | files            | Map of files to copy                         | [native copy](https://docs.ansible.com/ansible/latest/modules/copy_module.html) module |
@@ -15,7 +15,7 @@ Opionated role for creating shortcuts for various ansible tasks
 | sysctls | Sysctl variables to set | native [sysctl](https://docs.ansible.com/ansible/latest/modules/sysctl_module.html) module |
 | env_vars | Environment variables to set | `/etc/environment`|
 
-### <img src="../images/cloudinit.png" height=24>  Cloud Init
+### <img src="images/cloudinit.png" height=24>  Cloud Init
 | Option           | Description                                  | Support |
 | ---------------- | -------------------------------------------- | -------- |
 | files            | Map of files to copy                         | ⌛ |
@@ -26,7 +26,7 @@ Opionated role for creating shortcuts for various ansible tasks
 | sysctls | Sysctl variables to set | ⌛ |
 | env_vars | Environment variables to set | ⌛ |
 
-### <img src="../images/ecs.png" height=24>  AWS ECS
+### <img src="images/ecs.png" height=24>  AWS ECS
 | Option           | Description                                  | Support |
 | ---------------- | -------------------------------------------- | -------- |
 | files            | Map of files to copy                         | ⌛ |
@@ -37,7 +37,7 @@ Opionated role for creating shortcuts for various ansible tasks
 | sysctls | Sysctl variables to set | ⌛ |
 | env_vars | Environment variables to set | ⌛ |
 
-### <img src="../images/swarm.png" height=24>  Docker Swarm
+### <img src="images/swarm.png" height=24>  Docker Swarm
 
 | Option           | Description                                  | Support |
 | ---------------- | -------------------------------------------- | -------- |
@@ -49,7 +49,7 @@ Opionated role for creating shortcuts for various ansible tasks
 | sysctls | Sysctl variables to set | ⌛ |
 | env_vars | Environment variables to set | ⌛ |
 
-### <img src="../images/kubernetes.png" height=24>  Kubernetes
+### <img src="images/kubernetes.png" height=24>  Kubernetes
 
 
 | Option           | Description                                  | Support |
