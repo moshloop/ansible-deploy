@@ -6,3 +6,4 @@ mounts: {}
 environment: {}
 env_vars: {}
 service_dns:
+target: ansible
