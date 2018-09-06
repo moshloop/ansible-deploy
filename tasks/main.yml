@@ -43,7 +43,6 @@
   sysctl:
     name: "{{item.key}}"
     value: "{{item.value}}"
-    state: present
     sysctl_set: yes
     state: present
     reload: yes
@@ -57,13 +56,22 @@
     state: mounted
   with_dict: "{{mounts}}"
 
+
+- debug: var=env_vars
+- name: Save environment variables
+  include: environment.yml
+  with_dict: "{{env_vars}}"
+
 - name: Execute commands
   shell: "{{item}}"
   with_items: "{{commands}}"
   when: commands is defined
 
-- include_role:
-    name: docker_systemd_service
+- name: Installing systemd based docker services
+  include_tasks: docker_service.yml
+  with_items: "{{containers}}"
+  loop_control:
+    loop_var: container
 
 - name: "Including {{item}}"
   include_tasks: "{{item}}.yml"

@@ -1,0 +1,17 @@
+- shell: "grep {{item.key}}= /etc/environment"
+  failed_when: false
+  changed_when: false
+  register: keyExists
+
+- lineinfile:
+    path: /etc/environment
+    regexp: "{{item.key}}=.*"
+    line: "{{item.key}}={{item.value}}"
+    create: true
+  when: keyExists.rc == 0
+
+- lineinfile:
+    path: /etc/environment
+    line: "{{item.key}}={{item.value}}"
+    create: true
+  when: keyExists.rc != 0
