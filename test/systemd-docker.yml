@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  gather_facts: no
+  remote_user: root
+  roles:
+    - moshloop.extras
+    - ../..
+
+  tasks:
+
+    - name: Mock out docker
+      systemd_service:
+        Name: docker
+        ExecStart: /usr/bin/nc -l 1000
+
+    - include_role: name=../..
+      vars:
+        containers:
+        - image: nginx
+          service: nginx
+          env:
+            DOMAIN: localhost.com
+          docker_opts: -H unix:///tmp/var/run/docker.sock
+          docker_args: -p 8081:80
+        - image: nginx
+          service: nginx2
+          env:
+            DOMAIN: localhost.com
+          docker_opts: -H unix:///tmp/var/run/docker.sock
+          docker_args: -p 8082:80

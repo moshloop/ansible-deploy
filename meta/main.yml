@@ -7,4 +7,3 @@ galaxy_info:
   galaxy_tags: []
   dependencies:
     - moshloop.extras
-    - moshloop.docker-systemd-service

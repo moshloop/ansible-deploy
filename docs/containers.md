@@ -1,6 +1,4 @@
 
-An ansible role that runs a container using docker as a systemd service
-
 ### Arguments
 
 | Argument       | Default              | Description |

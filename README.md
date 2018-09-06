@@ -28,7 +28,38 @@ containers:
  - image: nginx
    docker_args: -p 8080:80
 ```
-See [docker-systemd-service](https://github.com/moshloop/docker-systemd-service)
+### Arguments
+
+| Argument       | Default              | Description |
+| -------------- | -------------------- | ----------- |
+| **image**        | [Required]           | Docker image to run  |
+| **service** | base image name       | The name of the systemd service |
+| env     |                      | A dictionary of environment variables to pass through |
+| docker_args |                      | Additional arguments to the docker client e.g. `-p 8080:8080` |
+| docker_opts | | Additional options to the docker client e.g. `-H unix:///tmp/var/run/docker.sock` |
+| args |                   | Additional arguments to the container |
+| volumes |                |                                       |
+| ports |                |                                       |
+
+
+### Example
+
+```yaml
+---
+- hosts: localhost
+  roles:
+    - moshloop.deploy
+  vars:
+    containers:
+     - image: nginx
+       service: nginx
+       env:
+         DOMAIN: localhost.com
+     - image: nginx
+       service: nginx2
+       docker_args: -p 8080:80
+
+```
 
 ### mounts
 ```yaml
@@ -45,7 +76,6 @@ commands:
 ```
 
 Shorthand for executing shell commands
-
 
 ### sysctl
 

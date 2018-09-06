@@ -1,0 +1,14 @@
+---
+- hosts: all
+  roles:
+    - moshloop.extras
+  vars:
+    env_vars:
+      key1: value1
+      key2: value2
+  tasks:
+    - include_role: name=../..
+    - set_fact:
+        env_vars:
+          key2: value3
+    - include_role: name=../..

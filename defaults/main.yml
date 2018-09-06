@@ -3,3 +3,6 @@ containers: []
 files: {}
 templates: {}
 mounts: {}
+environment: {}
+env_vars: {}
+service_dns:
