@@ -1,79 +1,8 @@
-- name: Include group vaulted files
-  include_vars:
-    dir: "{{playbook_dir}}/vault"
-    extensions: ['']
-    files_matching: "{{item}}"
-  with_items: "{{group_names}}"
-  when: " (playbook_dir + '/vault') | dir_exists"
-  delegate_to: localhost
-  tags:
-    - always
+- include: ansible.yml
+  when: target == 'ansible'
 
-- name: Create directories
-  file:
-    state: directory
-    path: "{{item.key | dirname}}"
-  with_dict: "{{files}}"
+- include: ecs.yml
+  when: target == 'ecs'
 
-- name: Copy vaulted files
-  copy:
-    dest: "{{item.key}}"
-    src: "{{item.value}}"
-  with_dict: "{{files | default({})}}"
-
-- name: Create template directories
-  file:
-    state: directory
-    path: "{{item.key | dirname}}"
-  with_dict: "{{templates}}"
-
-- name: Copy templated files
-  template:
-    dest: "{{item.key}}"
-    src: "{{item.value}}"
-  with_dict: "{{templates }}"
-
-- name: Create mount points
-  file:
-      state: directory
-      path: "{{item.key}}"
-  with_dict: "{{mounts}}"
-
-- name: Sysctls
-  sysctl:
-    name: "{{item.key}}"
-    value: "{{item.value}}"
-    sysctl_set: yes
-    state: present
-    reload: yes
-  with_dict: "{{sysctls}}"
-
-- name: Mount mounts
-  mount:
-    path: "{{item.key}}"
-    src: "{{item.value}}"
-    fstype: nfs
-    state: mounted
-  with_dict: "{{mounts}}"
-
-
-- debug: var=env_vars
-- name: Save environment variables
-  include: environment.yml
-  with_dict: "{{env_vars}}"
-
-- name: Execute commands
-  shell: "{{item}}"
-  with_items: "{{commands}}"
-  when: commands is defined
-
-- name: Installing systemd based docker services
-  include_tasks: docker_service.yml
-  with_items: "{{containers}}"
-  loop_control:
-    loop_var: container
-
-- name: "Including {{item}}"
-  include_tasks: "{{item}}.yml"
-  when: "(item + '.yml') | file_exists"
-  with_items: "{{group_names}}"
+- include: cloudinit.yml
+  when: target == 'cloudinit'
