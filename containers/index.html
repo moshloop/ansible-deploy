@@ -310,27 +310,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#aws-ec2" title="AWS EC2" class="md-nav__link">
-    AWS EC2
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker-swarm" title="Docker Swarm" class="md-nav__link">
-    Docker Swarm
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes" title="Kubernetes" class="md-nav__link">
-    Kubernetes
-  </a>
-  
-</li>
-      
       
       
       
@@ -523,27 +502,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#aws-ec2" title="AWS EC2" class="md-nav__link">
-    AWS EC2
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker-swarm" title="Docker Swarm" class="md-nav__link">
-    Docker Swarm
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes" title="Kubernetes" class="md-nav__link">
-    Kubernetes
-  </a>
-  
-</li>
-      
       
       
       
@@ -565,8 +523,7 @@
                 
                   <h1>Containers</h1>
                 
-                <p>An ansible role that runs a container using docker as a systemd service</p>
-<h3 id="arguments">Arguments</h3>
+                <h3 id="arguments">Arguments</h3>
 <table>
 <thead>
 <tr>
@@ -582,8 +539,8 @@
 <td>Docker image to run</td>
 </tr>
 <tr>
-<td><strong>service</strong></td>
-<td>[Required]</td>
+<td>service</td>
+<td>{base image name}</td>
 <td>The name of the systemd service</td>
 </tr>
 <tr>
@@ -609,13 +566,20 @@
 <tr>
 <td>volumes</td>
 <td></td>
+<td>List of volume mappings</td>
+</tr>
+<tr>
+<td>ports</td>
+<td></td>
+<td>List of port mappings</td>
+</tr>
+<tr>
+<td>network</td>
+<td>user-bridge</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition js">
-<p class="admonition-title">Js</p>
-</div>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -627,44 +591,10 @@
  9
 10
 11
-12
-13
-14</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="err">-</span> <span class="err">hosts:</span> <span class="err">localhost.</span>
-  <span class="err">roles:</span>
-    <span class="err">-</span> <span class="err">moshloop.systemd.</span>
-  <span class="err">tasks:</span>
-    <span class="err">-</span> <span class="err">include_role:</span> <span class="err">name=moshloop.docker_systemd_service</span>
-      <span class="err">vars:</span>
-        <span class="err">containers:</span>
-         <span class="err">-</span> <span class="err">image:</span> <span class="err">nginx</span>
-           <span class="err">service:</span> <span class="err">nginx</span>
-           <span class="err">env:</span>
-             <span class="err">DOMAIN:</span> <span class="err">localhost.com</span>
-         <span class="err">-</span> <span class="err">image:</span> <span class="err">nginx</span>
-           <span class="err">service:</span> <span class="err">nginx</span><span class="mi">2</span>
-           <span class="err">docker_args:</span> <span class="err">-p</span> <span class="mi">8080</span><span class="err">:</span><span class="mi">80</span>
-</pre></div>
-</td></tr></table>
-
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
   <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">moshloop.systemd</span>
-  <span class="l l-Scalar l-Scalar-Plain">tasks</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">include_role</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">name=moshloop.docker_systemd_service</span>
-      <span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">deploy</span>
+  <span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
         <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
            <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
@@ -676,9 +606,7 @@
 </pre></div>
 </td></tr></table>
 
-<h3 id="aws-ec2">AWS EC2</h3>
-<h3 id="docker-swarm">Docker Swarm</h3>
-<h3 id="kubernetes">Kubernetes</h3>
+<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that control containers</p>
                 
                   
                 
