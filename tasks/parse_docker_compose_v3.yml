@@ -1,0 +1,10 @@
+- debug: msg="Parsing docker compose v3 {{item}}"
+
+- include_vars:
+    file: "{{item}}"
+    name: services
+
+- include: _parse_docker_compose_v3.yml
+  with_dict: "{{services.services}}"
+  loop_control:
+    loop_var: svc

@@ -1,0 +1,31 @@
+- debug: var=svc
+
+- set_fact:
+    container: "{{svc.value}}"
+
+- set_fact:
+    image: "{{ container.image }}"
+    service: "{{ svc.key }}"
+    docker_opts: "{{ container.docker_opts | default('')}}"
+    docker_args: "{{ container.docker_args | default('')}}"
+    args: "{{ container.args | default('')}}"
+    network: "{{container.network | default(network_name) | default('user-bridge') }}"
+    volumes: ""
+    ports: "{{ container.ports | default([]) }}"
+    env: "{{ container.env | default({})}}"
+    mem: "{{container.mem | default(svc.get('value', {}).get('deploy', {}).get('resources', {}).get('limits', {}).get('memory', container_default_mem)) }}"
+    cpu: "{{container.cpu | default(svc.get('value', {}).get('deploy', {}).get('resources', {}).get('limits', {}).get('cpu', container_default_cpu)) }}"
+
+- set_fact:
+    mem: "{{ mem | from_si_unit}}"
+
+- set_fact:
+    service: "{{service | split(':') | first }}"
+
+- set_fact:
+    {env: "{{env | combine({item.split('=')[0]: item.split('=')[1]}) }}"}
+  with_items: "{{svc.value.environment | default({}) }}"
+
+- debug: var=containers
+- set_fact:
+    containers: "{{containers + [{'image': image,'service': service, 'cpu': cpu, 'env': env,  'mem': mem, 'docker_opts':  docker_opts,'docker_args':docker_args,'args': args,'network': network,'volumes': volumes,'ports': ports   }] }}"

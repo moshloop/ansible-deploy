@@ -1,0 +1,19 @@
+- set_fact:
+    cluster_name: "{{cluster_name | default(envFull) }}"
+
+- template:
+    src: ecs.cf.tpl
+    dest: build/ecs.yml
+
+- name: deploy stack {{cluster_name}}
+  run_once: true
+  cloudformation:
+    stack_name: "{{cluster_name}}"
+    create_changeset: "{{create_change_set}}"
+    state: "present"
+    region: "{{region}}"
+    template: build/ecs.yml
+  when: not ansible_check_mode
+  register: out
+
+- debug: var=out
