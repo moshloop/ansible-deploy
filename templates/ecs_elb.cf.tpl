@@ -14,8 +14,9 @@
 {% for id in all_subnets | find_subnets(elb.subnet | default(subnet_name) ) | map(attribute='id') %}
         - {{id}}
 {% endfor %}
-{% for port in elb_ports %}
 {% set type = elb.type | default('http') | upper  %}
+{% set target_type = type | split(':') | last %}
+{% set type = type | split(':') | first %}
 {% set stickiness = elb.stickiness | default(false) %}
 
   {{elb_name }}{{port}}Listener:
@@ -23,7 +24,7 @@
     Properties:
 {% if type == 'HTTPS' %}
       Certificates:
-        - CertificateArn: "{{elb.sslId | default(default_ssl_arn)}}"
+        - CertificateArn: "{{elb['certificate-arn'] | default(default_ssl_arn)}}"
 {% endif %}
       DefaultActions:
         - {TargetGroupArn: !Ref "{{elb_name }}{{port}}", Type: "forward"}
@@ -37,8 +38,8 @@
     Properties:
       HealthCheckIntervalSeconds: {{elb['healthcheck-interval-seconds'] | default(30)}}
       HealthCheckPath: {{elb['healthcheck-path']  | default('/') }}
-      HealthCheckPort: {{elb['healthcheck-port'] | default(port) }}
-      HealthCheckProtocol: {{elb['healthcheck-protocol'] | default(type) }}
+      HealthCheckPort: {{elb['healthcheck-port'] | default(target_port) }}
+      HealthCheckProtocol: {{elb['healthcheck-protocol'] | default(target_type) }}
       HealthCheckTimeoutSeconds: {{elb['healthcheck-timeout-seconds'] | default(10)}}
       UnhealthyThresholdCount: {{elb['unhealthy-threshold-count'] | default(3) }}
       HealthyThresholdCount: {{elb['healthy-threshold-count'] | default(5) }}
@@ -50,11 +51,10 @@
 {% endif %}
       Matcher:
         HttpCode: {{ elb['success-codes'] | default('200')}}
-      Name: "LB-{{elb_name }}-{{port}}"
-      Port: {{port}}
-      Protocol: "{{type}}"
+      Name: "LB-{{elb_name }}-{{target_port}}"
+      Port: {{target_port}}
+      Protocol: "{{target_type}}"
       VpcId: "{{vpc}}"
-{% endfor %}
 
   {{elb_name}}DNS:
     Type: "AWS::Route53::RecordSet"

@@ -214,15 +214,14 @@ Resources:
         DesiredCount: 1
 {% if container.labels['elb.ports'] is defined %}
 {% set elb = container.labels | submap('elb.') %}
-{% set elb_ports = [elb.ports] %}
+{% set port = elb.ports | split(':') | first %}
+{% set target_port = elb.ports | split(':') | last  %}
 {% set elb_name = container.service | cf_name %}
         LoadBalancers:
-{% for port in elb_ports %}
           - ContainerName: "{{container.service}}"
-            ContainerPort: {{ port }}
+            ContainerPort: {{ target_port  }}
             TargetGroupArn: !Ref "{{elb_name}}{{port}}"
-{% endfor %}
-      DependsOn: ["{{elb_name }}{{elb_ports[0]}}Listener", "{{elb_name }}{{elb_ports[0]}}"]
+      DependsOn: ["{{elb_name }}{{port}}Listener", "{{elb_name }}{{port}}"]
 
 {% include 'ecs_elb.cf.tpl' %}
 {% endif %}
