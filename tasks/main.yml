@@ -6,6 +6,9 @@
     - always
   run_once: true
 
+- debug:
+    msg: "{{inventory_hostname}} -> {{docker_compose_v3}} "
+
 - include: parse_docker_compose_v3.yml
   with_items: "{{docker_compose_v3}}"
 
@@ -14,6 +17,8 @@
 
 - include: ecs.yml
   when: target == 'ecs'
+  run_once: true
 
 - include: cloudinit.yml
   when: target == 'cloudinit'
+  run_once: true

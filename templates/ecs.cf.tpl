@@ -210,9 +210,23 @@ Resources:
       Properties:
         ServiceName: "{{container.service}}"
         Cluster: !Ref Cluster
-        # ServiceRegistries:
-        #    - RegistryArn: !GetAtt "{{container.service | cf_name }}DNS.Arn"
         TaskDefinition: !Ref "{{container.service | cf_name }}"
         DesiredCount: 1
+{% if container.labels['elb.ports'] is defined %}
+{% set elb = container.labels | submap('elb.') %}
+{% set elb_ports = [elb.ports] %}
+{% set elb_name = container.service | cf_name %}
+        LoadBalancers:
+{% for port in elb_ports %}
+          - ContainerName: "{{container.service}}"
+            ContainerPort: {{ port }}
+            TargetGroupArn: !Ref "{{elb_name}}{{port}}"
+{% endfor %}
+      DependsOn: ["{{elb_name }}{{elb_ports[0]}}Listener", "{{elb_name }}{{elb_ports[0]}}"]
+
+{% include 'ecs_elb.cf.tpl' %}
+{% endif %}
+
+
 {% endfor %}
 {% endfor %}

@@ -4,6 +4,29 @@
 - template:
     src: ecs.cf.tpl
     dest: build/ecs.yml
+  register: build
+  check_mode: no
+
+- name: Create cloudformation S3 bucket
+  aws_s3:
+    bucket: "{{cf_template_bucket}}"
+    region: "{{region}}"
+    mode: create
+  run_once: true
+  when: not ansible_check_mode
+  delegate_to: localhost
+
+- name: upload cloudformation to S3
+  aws_s3:
+    bucket: "{{cf_template_bucket}}"
+    object: "{{timestamp}}-{{cluster_name}}.cf"
+    region: "{{region}}"
+    src: build/ecs.yml
+    mode: put
+  register: url
+  run_once: true
+  when: not ansible_check_mode
+  delegate_to: localhost
 
 - name: deploy stack {{cluster_name}}
   run_once: true
@@ -12,7 +35,7 @@
     create_changeset: "{{create_change_set}}"
     state: "present"
     region: "{{region}}"
-    template: build/ecs.yml
+    template_url: "{{url.url}}"
   when: not ansible_check_mode
   register: out
 
