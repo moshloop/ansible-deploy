@@ -1,31 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
 
-  Zone:
-    Type: "AWS::Route53::HostedZone"
-    Properties:
-      Name: "{{cluster_name}}.{{domain}}"
-
-  ZoneDelegation:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: "{{domain_id}}"
-      Name: "{{cluster_name}}.{{domain}}"
-      Type: NS
-      TTL: '600'
-      ResourceRecords: !GetAtt "Zone.NameServers"
-
   Logs:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: "/fargate/{{cluster_name}}"
       RetentionInDays: "{{log_retention | default(7) }}"
-
-  DNS:
-    Type: "AWS::ServiceDiscovery::PublicDnsNamespace"
-    Properties:
-      Description: "{{cluster_name}}"
-      Name:  "{{cluster_name}}.{{domain}}"
 
   Cluster:
     Type: AWS::ECS::Cluster
@@ -67,7 +47,10 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
         AssociatePublicIpAddress: false
-        ImageId:  ami-a7a242da
+{% if ssh_key_name is defined %}
+        KeyName: {{ssh_key_name}}
+{% endif %}
+        ImageId: "{{ecs_image_id | default('ami-0254e5972ebcd132c') }}"
         InstanceType: "{{ ecs_instance_type | default('c4.xlarge') }}"
         SecurityGroups:
 {% for id in security_group_ids  %}
@@ -89,11 +72,35 @@ Resources:
                 packages:
                     yum:
                         awslogs: []
+                        jq: []
+                    python:
+                        awscli: []
 
-                commands:
-                    01_add_instance_to_cluster:
-                        command: !Sub echo ECS_CLUSTER={{cluster_name}} >> /etc/ecs/ecs.config
                 files:
+                    "/etc/ecs/ecs.config":
+                        content: |
+                            ECS_CLUSTER={{cluster_name}}
+                    "/etc/weave/scope.config":
+                        content: |
+                            SERVICE_TOKEN=
+                    "/etc/init/ecs.override":
+                        source: https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/ecs.override
+                    "/etc/init/weave.conf":
+                        source: https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/weave.conf
+                    "/etc/init/scope.conf":
+                        source: https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/scope.conf
+                    "/etc/weave/run.sh":
+                        source: https://raw.github.com/weaveworks/integrations/master/aws/ecs/packer/to-upload/run.sh
+                        mode: '000755'
+                    "/etc/weave/peers.sh":
+                        source: https://raw.github.com/moshloop/weave-integrations/master/aws/ecs/packer/to-upload/peers.sh
+                        mode: '000755'
+                    "/usr/local/bin/weave":
+                        source: https://github.com/weaveworks/weave/releases/download/v2.4.0/weave
+                        mode: '000755'
+                    "/usr/local/bin/scope":
+                        source: https://github.com/weaveworks/scope/releases/download/v1.9.1/scope
+                        mode: '000755'
                     "/etc/cfn/cfn-hup.conf":
                         mode: 000400
                         owner: root
@@ -162,7 +169,6 @@ Resources:
                                 - /etc/awslogs/awslogs.conf
                                 - /etc/awslogs/awscli.conf
 
-
 {% for group in hostvars.keys() | play_groups(groups, hostvars) %}
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
@@ -171,7 +177,7 @@ Resources:
       Properties:
           Cpu: "{{ 1024 * container.cpu | int }}"
           Memory: "{{ container.mem  }}"
-          NetworkMode: awsvpc
+          NetworkMode: bridge
           ExecutionRoleArn: arn:aws:iam::{{account_id}}:role/ECSTaskExecutionRole
           ContainerDefinitions:
             - Name: {{container.service | default(container.image) }}
@@ -184,9 +190,15 @@ Resources:
                   "awslogs-region": "{{region}}"
                   "awslogs-stream-prefix": "{{container.service}}"
               Memory: "{{ container.mem }}"
-              # DnsSearchDomains:
-              #   - "{{cluster_name}}.{{domain}}"
-              #   - "{{domain}}"
+              DnsSearchDomains:
+                - weave.local
+                - "{{cluster_name}}.{{domain}}"
+                - "{{domain}}"
+              PortMappings:
+{% for port in container.ports %}
+                - ContainerPort: "{{ port.split(':')[1] }}"
+                  HostPort: "{{ port.split(':')[0] }}"
+{% endfor %}
               Environment:
 {% for key in container.env %}
                 - Name: {{key}}
@@ -198,30 +210,9 @@ Resources:
       Properties:
         ServiceName: "{{container.service}}"
         Cluster: !Ref Cluster
-        ServiceRegistries:
-           - RegistryArn: !GetAtt "{{container.service | cf_name }}DNS.Arn"
+        # ServiceRegistries:
+        #    - RegistryArn: !GetAtt "{{container.service | cf_name }}DNS.Arn"
         TaskDefinition: !Ref "{{container.service | cf_name }}"
         DesiredCount: 1
-        NetworkConfiguration:
-          AwsvpcConfiguration:
-            Subnets:
-{% for subnet in subnets %}
-              - {{subnet}}
-{% endfor %}
-            SecurityGroups:
-{% for id in security_group_ids  %}
-              - {{id}}
-{% endfor %}
-
-  {{container.service | cf_name }}DNS:
-      Type: "AWS::ServiceDiscovery::Service"
-      Properties:
-        DnsConfig:
-          DnsRecords:
-            - Type: A
-              TTL: 10
-          NamespaceId: !Ref DNS
-        Name: {{container.service}}
-
 {% endfor %}
 {% endfor %}
