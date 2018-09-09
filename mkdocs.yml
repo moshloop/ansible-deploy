@@ -2,8 +2,71 @@ repo_url: https://github.com/moshloop/ansible-deploy/
 repo_name: Ansible Deploy
 site_name: Ansible Deploy
 theme: material
+nav:
+  - Getting Started: ./index.md
+  - Targets:
+    - Ansible: ./targets/ansible.md
+    - AWS ECS: ./targets/ecs.md
+  - Containers: ./containers.md
+  - Commands: ./commands.md
+  - Files: ./template#files
+  - Templates: ./template.md
+  - Hooks: ./hooks.md
+  - Load Balancing: ./load-balancing.md
+  - Environment: ./environment.md
+  - Sysctl: ./sysctl.md
+  - Volumes: ./storage/#volumes
+  - Mounts: ./storage/#mounts
+  - Ansible Filters/Modules: ./ansible-addons.md
+
+
 markdown_extensions:
   - admonition
   - fenced_code
-  - codehilite:
-      linenums: true
+  - markdown.extensions.smarty:
+      smart_quotes: false
+  - pymdownx.betterem:
+  - markdown.extensions.attr_list:
+  - markdown.extensions.def_list:
+  - markdown.extensions.tables:
+  - markdown.extensions.abbr:
+  - markdown.extensions.footnotes:
+  - pymdownx.extrarawhtml:
+  - pymdownx.superfences:
+      preserve_tabs: true
+  - pymdownx.highlight:
+      css_class: codehilite
+      extend_pygments_lang:
+        - name: php-inline
+          lang: php
+          options:
+            startinline: true
+        - name: pycon3
+          lang: pycon
+          options:
+            python3: true
+      # linenums_style: pymdownx-inline
+  - pymdownx.inlinehilite:
+  - pymdownx.magiclink:
+      repo_url_shortener: true
+      repo_url_shorthand: true
+      social_url_shorthand: true
+      user: facelessuser
+      repo: pymdown-extensions
+  - pymdownx.tilde:
+  - pymdownx.caret:
+  - pymdownx.smartsymbols:
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_png
+  - pymdownx.escapeall:
+      hardbreak: True
+      nbsp: True
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.progressbar:
+  - pymdownx.arithmatex:
+  - pymdownx.mark:
+  - pymdownx.striphtml:
+  - pymdownx.keys:
+      separator: "\uff0b"
+  - pymdownx.details:

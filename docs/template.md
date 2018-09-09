@@ -8,6 +8,7 @@ files:
   /etc/some/file2: file2
 ```
 
+
 ### templates
 ```yaml
 templates:
