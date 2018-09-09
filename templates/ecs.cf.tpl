@@ -213,7 +213,7 @@ Resources:
         TaskDefinition: !Ref "{{container.service | cf_name }}"
         DesiredCount: 1
 {% if container.labels['elb.ports'] is defined %}
-{% set elb = container.labels | submap('elb.') %}
+{% set elb = container.labels | sub_map('elb.') %}
 {% set port = elb.ports | split(':') | first %}
 {% set target_port = elb.ports | split(':') | last  %}
 {% set elb_name = container.service | cf_name %}

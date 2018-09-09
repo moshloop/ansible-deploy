@@ -23,7 +23,7 @@
     replicas: "{{ container.replicas | default(deploy.get('replicas', '1')) }}"
 
 - set_fact:
-    mem: "{{ mem | from_si_unit}}"
+    mem: "{{ mem | from_si_unit('MB')}}"
 
 - set_fact:
     service: "{{service | split(':') | first }}"
