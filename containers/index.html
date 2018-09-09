@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.3, mkdocs-material-3.0.4">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.4">
     
     
       
@@ -244,34 +244,46 @@
       
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Targets
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Targets
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
-    <a href="../ansible-addons/" title="Ansible addons" class="md-nav__link">
-      Ansible addons
+    <a href="../targets/ansible/" title="Ansible" class="md-nav__link">
+      Ansible
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
-    <a href="../bootstrapping/" title="Bootstrapping" class="md-nav__link">
-      Bootstrapping
+    <a href="../targets/ecs/" title="AWS ECS" class="md-nav__link">
+      AWS ECS
     </a>
   </li>
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../commands/" title="Commands" class="md-nav__link">
-      Commands
-    </a>
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -310,6 +322,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#docker-compose" title="Docker Compose" class="md-nav__link">
+    Docker Compose
+  </a>
+  
+</li>
+      
       
       
       
@@ -327,8 +346,32 @@
 
 
   <li class="md-nav__item">
-    <a href="../environment/" title="Environment" class="md-nav__link">
-      Environment
+    <a href="../commands/" title="Commands" class="md-nav__link">
+      Commands
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../template#files" title="Files" class="md-nav__link">
+      Files
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../template/" title="Templates" class="md-nav__link">
+      Templates
     </a>
   </li>
 
@@ -351,8 +394,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../load-balancing/" title="Load balancing" class="md-nav__link">
-      Load balancing
+    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
+      Load Balancing
     </a>
   </li>
 
@@ -363,8 +406,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../storage/" title="Storage" class="md-nav__link">
-      Storage
+    <a href="../environment/" title="Environment" class="md-nav__link">
+      Environment
     </a>
   </li>
 
@@ -375,8 +418,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../systctl/" title="Systctl" class="md-nav__link">
-      Systctl
+    <a href="../sysctl/" title="Sysctl" class="md-nav__link">
+      Sysctl
     </a>
   </li>
 
@@ -387,8 +430,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../systemd/" title="Systemd" class="md-nav__link">
-      Systemd
+    <a href="../storage/#volumes" title="Volumes" class="md-nav__link">
+      Volumes
     </a>
   </li>
 
@@ -399,8 +442,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../targets/" title="Targets" class="md-nav__link">
-      Targets
+    <a href="../storage/#mounts" title="Mounts" class="md-nav__link">
+      Mounts
     </a>
   </li>
 
@@ -411,69 +454,9 @@
 
 
   <li class="md-nav__item">
-    <a href="../template/" title="Files & Templates" class="md-nav__link">
-      Files & Templates
+    <a href="../ansible-addons/" title="Ansible Filters/Modules" class="md-nav__link">
+      Ansible Filters/Modules
     </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-14" type="checkbox" id="nav-14">
-    
-    <label class="md-nav__link" for="nav-14">
-      Commands
-    </label>
-    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-14">
-        Commands
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../commands/ansible-run/" title="ansible-run" class="md-nav__link">
-      ansible-run
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../commands/ansible-test/" title="ansible-test" class="md-nav__link">
-      ansible-test
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../commands/other/" title="Other" class="md-nav__link">
-      Other
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
   </li>
 
     
@@ -498,6 +481,13 @@
         <li class="md-nav__item">
   <a href="#arguments" title="Arguments" class="md-nav__link">
     Arguments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" title="Docker Compose" class="md-nav__link">
+    Docker Compose
   </a>
   
 </li>
@@ -540,7 +530,7 @@
 </tr>
 <tr>
 <td>service</td>
-<td>{base image name}</td>
+<td base="base" image="image" name="name"></td>
 <td>The name of the systemd service</td>
 </tr>
 <tr>
@@ -580,18 +570,9 @@
 </tr>
 </tbody>
 </table>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<div class="admonition example">
+<p class="admonition-title">play.yml</p>
+<div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
   <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">deploy</span>
   <span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
@@ -604,9 +585,46 @@
            <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx2</span>
            <span class="l l-Scalar l-Scalar-Plain">docker_args</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">-p 8080:80</span>
 </pre></div>
-</td></tr></table>
 
-<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that control containers</p>
+</div>
+<h3 id="docker-compose">Docker Compose</h3>
+<p>Docker compose can also be used as a source to deploy to any target.</p>
+<div class="admonition example">
+<p class="admonition-title">group_vars/group.yml</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker_compose_v3</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">files/docker-compose.yml</span>
+</pre></div>
+
+</div>
+<div class="admonition example">
+<p class="admonition-title">files/docker-compose.yml</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">gateway</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">gateway:4.1.0-SNAPSHOT</span>
+    <span class="l l-Scalar l-Scalar-Plain">deploy</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2G</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TZ=Africa/Harare</span>
+    <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;8166:8166&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
+<span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">user</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">external</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+</pre></div>
+
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><img src="../images/ecs.png" height="24" width=24 /> Custom networks are not supported on ECS, All containers run on a single weave network overlay</p>
+</div>
+<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls containers <br>
+<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay</p>
                 
                   
                 
@@ -627,7 +645,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../commands/" title="Commands" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../targets/ecs/" title="AWS ECS" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -636,19 +654,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Commands
+                AWS ECS
               </span>
             </div>
           </a>
         
         
-          <a href="../environment/" title="Environment" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../commands/" title="Commands" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Environment
+                Commands
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -680,7 +698,7 @@
     
       <script src="../assets/javascripts/application.583bbe55.js"></script>
       
-      <script>app.initialize({version:"1.0.3",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
     
