@@ -211,7 +211,7 @@ Resources:
         ServiceName: "{{container.service}}"
         Cluster: !Ref Cluster
         TaskDefinition: !Ref "{{container.service | cf_name }}"
-        DesiredCount: 1
+        DesiredCount: "{{ container.replicas | default(1) }}"
 {% if container.labels['elb.ports'] is defined %}
 {% set elb = container.labels | sub_map('elb.') %}
 {% set port = elb.ports | split(':') | first %}
