@@ -1,4 +1,5 @@
 sysctls: {}
+hooks: []
 containers: []
 files: {}
 templates: {}

@@ -4,8 +4,6 @@
     container: "{{svc.value}}"
     deploy: "{{ svc.get('value', {}).get('deploy', {})}}"
 
-
-
 - set_fact:
     image: "{{ container.image }}"
     service: "{{ svc.key | lower}}"

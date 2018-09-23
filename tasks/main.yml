@@ -6,8 +6,18 @@
     - always
   run_once: true
 
-- debug:
-    msg: "{{inventory_hostname}} -> {{docker_compose_v3}} "
+- name: Running before (run_once) hooks {{hooks}}
+  include_tasks: '{{item}}'
+  vars:
+    include_dir: "{{item | dirname }}"
+  run_once: true
+  with_items: "{{hooks | deploy_hooks('before', True, group_names) }}"
+
+- name: Running before hooks
+  vars:
+    include_dir: "{{item | dirname }}"
+  include_tasks: '{{item}}'
+  with_items: "{{hooks | deploy_hooks('before', False, group_names) }}"
 
 - include: parse_docker_compose_v3.yml
   with_items: "{{docker_compose_v3}}"
@@ -22,3 +32,16 @@
 - include: cloudinit.yml
   when: target == 'cloudinit'
   run_once: true
+
+- name: Running after hooks
+  include: '{{item}}'
+  vars:
+    include_dir: "{{item | dirname }}"
+  with_items: "{{hooks | deploy_hooks('after', False, groups) }}"
+
+- name: Running after (run_once) hooks
+  vars:
+    include_dir: "{{item | dirname }}"
+  include: '{{item}}'
+  with_items: "{{hooks | deploy_hooks('after', True, groups) }}"
+

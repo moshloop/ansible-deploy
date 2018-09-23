@@ -56,8 +56,6 @@
     state: mounted
   with_dict: "{{mounts}}"
 
-
-- debug: var=env_vars
 - name: Save environment variables
   include: environment.yml
   with_dict: "{{env_vars}}"
@@ -72,8 +70,3 @@
   with_items: "{{containers}}"
   loop_control:
     loop_var: container
-
-- name: "Including {{item}}"
-  include_tasks: "{{item}}.yml"
-  when: "(item + '.yml') | file_exists"
-  with_items: "{{group_names}}"

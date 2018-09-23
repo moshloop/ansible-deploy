@@ -1,5 +1,6 @@
 - set_fact:
     cluster_name: "{{cluster_name | default(envFull) }}"
+    docker_registry: "{{ docker_registry | default(account_id + '.dkr.ecr.' + region + '.amazonaws.com') }}"
 
 - template:
     src: ecs.cf.tpl
