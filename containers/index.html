@@ -101,7 +101,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href=".." title="Ansible Deploy" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">cloud_upload</i>
           
         </a>
       </div>
@@ -197,7 +197,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href=".." title="Ansible Deploy" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">cloud_upload</i>
       
     </a>
     Ansible Deploy
@@ -294,6 +294,27 @@
   
 
 
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Interfaces
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Interfaces
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
   <li class="md-nav__item md-nav__item--active">
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
@@ -339,10 +360,10 @@
     
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -351,10 +372,10 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -363,16 +384,81 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
     <a href="../template/" title="Templates" class="md-nav__link">
       Templates
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
+      Load Balancing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../environment/" title="Environment" class="md-nav__link">
+      Environment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sysctl/" title="Sysctl" class="md-nav__link">
+      Sysctl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../storage/#volumes" title="Volumes" class="md-nav__link">
+      Volumes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../storage/#mounts" title="Mounts" class="md-nav__link">
+      Mounts
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -384,66 +470,6 @@
   <li class="md-nav__item">
     <a href="../hooks/" title="Hooks" class="md-nav__link">
       Hooks
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
-      Load Balancing
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../environment/" title="Environment" class="md-nav__link">
-      Environment
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../sysctl/" title="Sysctl" class="md-nav__link">
-      Sysctl
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../storage/#volumes" title="Volumes" class="md-nav__link">
-      Volumes
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../storage/#mounts" title="Mounts" class="md-nav__link">
-      Mounts
     </a>
   </li>
 
@@ -539,6 +565,11 @@
 <td>A dictionary of environment variables to pass through</td>
 </tr>
 <tr>
+<td>labels</td>
+<td></td>
+<td>A dictionary of labels to add to the container</td>
+</tr>
+<tr>
 <td>docker_args</td>
 <td></td>
 <td>Additional arguments to the docker client e.g. <code>-p 8080:8080</code></td>
@@ -568,6 +599,21 @@
 <td>user-bridge</td>
 <td></td>
 </tr>
+<tr>
+<td>cpu</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mem</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>replicas</td>
+<td>1</td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition example">
@@ -588,7 +634,16 @@
 
 </div>
 <h3 id="docker-compose">Docker Compose</h3>
-<p>Docker compose can also be used as a source to deploy to any target.</p>
+<p>Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:</p>
+<ul>
+<li>ports</li>
+<li>environment</li>
+<li>image</li>
+<li>deploy/limits</li>
+<li>deploy/replicas</li>
+<li>networks (Not supported on ECS)</li>
+<li>ui.labels (See <a href="../../load-balancing/">Load Balancing</a>)</li>
+</ul>
 <div class="admonition example">
 <p class="admonition-title">group_vars/group.yml</p>
 <div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker_compose_v3</span><span class="p p-Indicator">:</span>
@@ -619,11 +674,7 @@
 </pre></div>
 
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><img src="../images/ecs.png" height="24" width=24 /> Custom networks are not supported on ECS, All containers run on a single weave network overlay</p>
-</div>
-<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls containers <br>
+<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
 <img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay</p>
                 
                   
@@ -699,6 +750,8 @@
       <script src="../assets/javascripts/application.583bbe55.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+        <script src="../extra.js"></script>
       
     
     

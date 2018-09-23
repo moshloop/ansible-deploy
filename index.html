@@ -90,7 +90,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#getting-started" tabindex="1" class="md-skip">
+      <a href="#design-principlesgoals" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -101,7 +101,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href="." title="Ansible Deploy" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">cloud_upload</i>
           
         </a>
       </div>
@@ -197,7 +197,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="." title="Ansible Deploy" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">cloud_upload</i>
       
     </a>
     Ansible Deploy
@@ -238,8 +238,6 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         Getting Started
@@ -253,15 +251,54 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#targets" title="Targets" class="md-nav__link">
-    Targets
+  <a href="#design-principlesgoals" title="Design Principles/Goals" class="md-nav__link">
+    Design Principles/Goals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-targeting" title="Multi-Targeting" class="md-nav__link">
+    Multi-Targeting
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#supported-targets" title="Supported targets" class="md-nav__link">
+    Supported targets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roadmap" title="Roadmap" class="md-nav__link">
+    Roadmap
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inventory-model" title="Inventory Model" class="md-nav__link">
+    Inventory Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" title="Hooks" class="md-nav__link">
+    Hooks
   </a>
   
 </li>
@@ -330,16 +367,35 @@
       
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Interfaces
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Interfaces
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
     <a href="containers/" title="Containers" class="md-nav__link">
       Containers
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -348,10 +404,10 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -360,16 +416,81 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
     <a href="template/" title="Templates" class="md-nav__link">
       Templates
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="load-balancing/" title="Load Balancing" class="md-nav__link">
+      Load Balancing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="environment/" title="Environment" class="md-nav__link">
+      Environment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="sysctl/" title="Sysctl" class="md-nav__link">
+      Sysctl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="storage/#volumes" title="Volumes" class="md-nav__link">
+      Volumes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="storage/#mounts" title="Mounts" class="md-nav__link">
+      Mounts
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -381,66 +502,6 @@
   <li class="md-nav__item">
     <a href="hooks/" title="Hooks" class="md-nav__link">
       Hooks
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="load-balancing/" title="Load Balancing" class="md-nav__link">
-      Load Balancing
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="environment/" title="Environment" class="md-nav__link">
-      Environment
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="sysctl/" title="Sysctl" class="md-nav__link">
-      Sysctl
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="storage/#volumes" title="Volumes" class="md-nav__link">
-      Volumes
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="storage/#mounts" title="Mounts" class="md-nav__link">
-      Mounts
     </a>
   </li>
 
@@ -471,15 +532,54 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#targets" title="Targets" class="md-nav__link">
-    Targets
+  <a href="#design-principlesgoals" title="Design Principles/Goals" class="md-nav__link">
+    Design Principles/Goals
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-targeting" title="Multi-Targeting" class="md-nav__link">
+    Multi-Targeting
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#supported-targets" title="Supported targets" class="md-nav__link">
+    Supported targets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roadmap" title="Roadmap" class="md-nav__link">
+    Roadmap
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inventory-model" title="Inventory Model" class="md-nav__link">
+    Inventory Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks" title="Hooks" class="md-nav__link">
+    Hooks
   </a>
   
 </li>
@@ -503,11 +603,26 @@
                   <a href="https://github.com/moshloop/ansible-deploy/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="getting-started">Getting Started</h1>
-<p>Opionated role for creating shortcuts for various ansible tasks</p>
-<h2 id="targets">Targets</h2>
-<p><img src="../images/ansible.png" height=24>  <a href="targets/ansible/">Ansible</a> <br>
-<img src="../images/ecs.png" height=24>  <a href="targets/ecs/">AWS ECS</a></p>
+                  <h1>Getting Started</h1>
+                
+                <p>Opionated role for creating shortcuts for various ansible tasks</p>
+<h2 id="design-principlesgoals">Design Principles/Goals</h2>
+<ul>
+<li><strong>Multi-targeting</strong> - The ability to take the same manifest and deploy it to different target environments</li>
+<li><strong>Convention over configuration</strong> - Only require the most minimal set of information to deploy.</li>
+<li><strong>Batteries included</strong> - Implement best practises by default, switch to vania</li>
+<li><strong>Composable</strong> - Multiple and complex environments are assumed. e.g. It should be easy to share manifest between staging and production while at the same time allowing central IT to inject dependencies into multiple deployment manifests to enforce standards.</li>
+</ul>
+<h2 id="multi-targeting">Multi-Targeting</h2>
+<h4 id="supported-targets">Supported targets</h4>
+<p><img src="images/ansible.png" height=24 align=top> <a href="targets/ansible/">Ansible</a> <br>
+<img src="images/ecs.png" height=24 align=top> <a href="targets/ecs/">AWS ECS</a><br></p>
+<h4 id="roadmap">Roadmap</h4>
+<p><img src="images/cloudinit.png" height=24 width="24" align=top> Cloudinit <br>
+<img src="images/kubernetes.png"  height=24 width="24" align=top> Kubernetes <br>
+<img src="images/swarm.png" height=24 width="24" align=top> Swarm <br></p>
+<h2 id="inventory-model">Inventory Model</h2>
+<h2 id="hooks">Hooks</h2>
                 
                   
                 
@@ -568,6 +683,8 @@
       <script src="assets/javascripts/application.583bbe55.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      
+        <script src="extra.js"></script>
       
     
     

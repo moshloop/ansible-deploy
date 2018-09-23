@@ -90,7 +90,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#group-vars-tasks" tabindex="1" class="md-skip">
+      <a href="../#hook-lifecycle" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -101,7 +101,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href=".." title="Ansible Deploy" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">cloud_upload</i>
           
         </a>
       </div>
@@ -197,7 +197,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href=".." title="Ansible Deploy" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">cloud_upload</i>
       
     </a>
     Ansible Deploy
@@ -292,16 +292,35 @@
       
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Interfaces
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Interfaces
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
     <a href="../containers/" title="Containers" class="md-nav__link">
       Containers
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -310,10 +329,10 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
@@ -322,16 +341,81 @@
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
     <a href="../template/" title="Templates" class="md-nav__link">
       Templates
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
+      Load Balancing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../environment/" title="Environment" class="md-nav__link">
+      Environment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sysctl/" title="Sysctl" class="md-nav__link">
+      Sysctl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../storage/#volumes" title="Volumes" class="md-nav__link">
+      Volumes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../storage/#mounts" title="Mounts" class="md-nav__link">
+      Mounts
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -364,15 +448,62 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#group-vars-tasks" title="group vars / tasks" class="md-nav__link">
-    group vars / tasks
+  <a href="#hook-lifecycle" title="Hook Lifecycle" class="md-nav__link">
+    Hook Lifecycle
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before" title="Before" class="md-nav__link">
+    Before
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#after" title="After" class="md-nav__link">
+    After
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#group-tasks" title="group tasks" class="md-nav__link">
-    group tasks
+  <a href="#hook-types" title="Hook Types" class="md-nav__link">
+    Hook Types
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tasks" title="Tasks" class="md-nav__link">
+    Tasks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vaults" title="Vaults" class="md-nav__link">
+    Vaults
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-location" title="Hook Location" class="md-nav__link">
+    Hook Location
   </a>
   
 </li>
@@ -385,66 +516,6 @@
   
 </nav>
     
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
-      Load Balancing
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../environment/" title="Environment" class="md-nav__link">
-      Environment
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../sysctl/" title="Sysctl" class="md-nav__link">
-      Sysctl
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../storage/#volumes" title="Volumes" class="md-nav__link">
-      Volumes
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../storage/#mounts" title="Mounts" class="md-nav__link">
-      Mounts
-    </a>
   </li>
 
     
@@ -479,15 +550,62 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#group-vars-tasks" title="group vars / tasks" class="md-nav__link">
-    group vars / tasks
+  <a href="#hook-lifecycle" title="Hook Lifecycle" class="md-nav__link">
+    Hook Lifecycle
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before" title="Before" class="md-nav__link">
+    Before
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#after" title="After" class="md-nav__link">
+    After
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#group-tasks" title="group tasks" class="md-nav__link">
-    group tasks
+  <a href="#hook-types" title="Hook Types" class="md-nav__link">
+    Hook Types
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tasks" title="Tasks" class="md-nav__link">
+    Tasks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vaults" title="Vaults" class="md-nav__link">
+    Vaults
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook-location" title="Hook Location" class="md-nav__link">
+    Hook Location
   </a>
   
 </li>
@@ -513,11 +631,46 @@
                 
                   <h1>Hooks</h1>
                 
-                <h3 id="group-vars-tasks">group vars / tasks</h3>
-<p>Automatically imports vault and variables files</p>
-<h3 id="group-tasks">group tasks</h3>
-<p>Checks for and runs custom tasks for each group, by dynamically include a task list based on group names.</p>
-<p>e.g. group_names == 'web,prod' will look for and run <code>web.yml</code> and <code>prod.yml</code> in the same directory as the playbook</p>
+                <p>Hooks provide a mechanism for implementing cross-cutting concerns against multiple ansible repositories / playbooks / roles.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Hooks are analogous to <a href="https://junit.org/junit5/docs/current/user-guide/#writing-tests-classes-and-methods">JUnit's</a> <code>@Before</code>,<code>@After</code>..  and <a href="https://jasmine.github.io/api/3.2/global.html#afterAll">Jasmine's</a> <code>beforeEach()</code>,<code>afterAll()</code></p>
+</div>
+<h3 id="hook-lifecycle">Hook Lifecycle</h3>
+<ul>
+<li>before once hooks</li>
+<li>before each hooks</li>
+<li>group vaults</li>
+<li>⇨ <strong>execute</strong> ⇦</li>
+<li>after each hooks</li>
+<li>after once hooks</li>
+</ul>
+<p>Assuming group_names: all, web</p>
+<ul>
+<li>before.all.once.yml (<code>run_once: true</code>)</li>
+<li>before.web.once.yml (<code>run_once: true</code>)</li>
+<li>before.all.yml</li>
+<li>before.web.yml</li>
+<li>vault/all</li>
+<li>vault/web</li>
+<li>⇨ <strong>execute</strong> ⇦</li>
+<li>after.all.yml</li>
+<li>after.web.yml</li>
+<li>after.web.once.yml (<code>run_once: true</code>)</li>
+<li>after.all.once.yml (<code>run_once: true</code>)</li>
+</ul>
+<h4 id="before">Before</h4>
+<p>Before hooks are useful enhancing or transforming the inventory model, e.g inject new containers into <code>containers</code> or updating <code>docker_registry</code> with temporary credentials.</p>
+<p><code>before.all.once.yml</code> vs <code>before.all.yml</code></p>
+<h4 id="after">After</h4>
+<p>After hooks run after everything else and allows for the full use of ansible.</p>
+<h3 id="hook-types">Hook Types</h3>
+<h4 id="tasks">Tasks</h4>
+<p>Task hooks are imported using <code>include:</code> and just run the tasks listed in the yml file.</p>
+<h4 id="vaults">Vaults</h4>
+<p>Similar to vaulted files and variables included inside an inventory, Hook vaults are only imported on-demand, i.e. if you exclude tasks via <code>--tags</code>  or hosts via <code>--limit</code> then a vault password is required. This allows running a subset of a playbook without access to the vault.</p>
+<h3 id="hook-location">Hook Location</h3>
+<p>Hook files can placed inside the working directory and/or from any location specified by the <code>hooks</code> list.</p>
                 
                   
                 
@@ -538,7 +691,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../template/" title="Templates" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../sysctl/" title="Sysctl" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -547,19 +700,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Templates
+                Sysctl
               </span>
             </div>
           </a>
         
         
-          <a href="../load-balancing/" title="Load Balancing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../ansible-addons/" title="Ansible Filters/Modules" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Load Balancing
+                Ansible Filters/Modules
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -592,6 +745,8 @@
       <script src="../assets/javascripts/application.583bbe55.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+        <script src="../extra.js"></script>
       
     
     
