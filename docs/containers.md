@@ -6,12 +6,16 @@
 | **image**        | [Required]           | Docker image to run  |
 | service | {base image name} | The name of the systemd service |
 | env     |                      | A dictionary of environment variables to pass through |
+| labels | | A dictionary of labels to add to the container |
 | docker_args |                      | Additional arguments to the docker client e.g. `-p 8080:8080` |
 | docker_opts | | Additional options to the docker client e.g. `-H unix:///tmp/var/run/docker.sock` |
 | args |                   | Additional arguments to the container |
 | volumes |                | List of volume mappings |
 | ports | | List of port mappings |
 | network | user-bridge | |
+| cpu |  | |
+| mem |  | |
+| replicas | 1 | |
 
 !!! example "play.yml"
     ``` yaml
@@ -30,7 +34,15 @@
     ```
 
 ### Docker Compose
-Docker compose can also be used as a source to deploy to any target.
+Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:
+
+* ports
+* environment
+* image
+* deploy/limits
+* deploy/replicas
+* networks (Not supported on ECS)
+* ui.labels (See [Load Balancing](../../load-balancing/))
 
 !!! example "group_vars/group.yml"
 
@@ -62,9 +74,7 @@ Docker compose can also be used as a source to deploy to any target.
 
     ```
 
-!!! warning
-    <img src="../images/ecs.png" height="24" width=24 /> Custom networks are not supported on ECS, All containers run on a single weave network overlay
 
-<img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls containers <br>
+<img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
 <img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay
 

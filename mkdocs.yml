@@ -1,22 +1,29 @@
 repo_url: https://github.com/moshloop/ansible-deploy/
 repo_name: Ansible Deploy
 site_name: Ansible Deploy
-theme: material
+theme:
+  name: material
+  logo:
+    icon: 'cloud_upload'
+  custom_dir: docs/custom_theme/
+extra_javascript:
+  - ./extra.js
 nav:
   - Getting Started: ./index.md
   - Targets:
     - Ansible: ./targets/ansible.md
     - AWS ECS: ./targets/ecs.md
-  - Containers: ./containers.md
-  - Commands: ./commands.md
-  - Files: ./template#files
-  - Templates: ./template.md
+  - Interfaces:
+    - Containers: ./containers.md
+    - Commands: ./commands.md
+    - Files: ./template#files
+    - Templates: ./template.md
+    - Load Balancing: ./load-balancing.md
+    - Environment: ./environment.md
+    - Sysctl: ./sysctl.md
+    - Volumes: ./storage/#volumes
+    - Mounts: ./storage/#mounts
   - Hooks: ./hooks.md
-  - Load Balancing: ./load-balancing.md
-  - Environment: ./environment.md
-  - Sysctl: ./sysctl.md
-  - Volumes: ./storage/#volumes
-  - Mounts: ./storage/#mounts
   - Ansible Filters/Modules: ./ansible-addons.md
 
 
