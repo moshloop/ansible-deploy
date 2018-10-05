@@ -31,7 +31,6 @@
 
 - include: cloudinit.yml
   when: target == 'cloudinit'
-  run_once: true
 
 - name: Running after hooks
   include: '{{item}}'
