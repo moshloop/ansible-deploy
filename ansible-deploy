@@ -25,12 +25,7 @@ done
 
 OLD=$(pwd)
 if [[ ! -e ~/.ansible-deploy ]]; then
-  git checkout https://github.com/moshloop/ansible-deploy.git ~/.ansible-deploy
-   ~/.ansible-deploy/init.sh
-else
-  cd ~/.ansible-deploy
-  git pull upstream
-  ./init.sh
+  git clone https://github.com/moshloop/ansible-deploy.git ~/.ansible-deploy
 fi
 cd $OLD
 
