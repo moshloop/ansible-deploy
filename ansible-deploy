@@ -1,0 +1,37 @@
+#!/bin/bash
+target=ansible
+inventory=
+ARGS=
+while getopts ":i:, :h, :t:" opt; do
+  case $opt in
+    h)
+      echo "USAGE: ansible-deploy [any ansible-playbook arguments]"
+      exit
+      ;;
+    t)
+    target=$OPTARG
+      ;;
+
+    i)
+    inventory=$OPTARG
+      ;;
+
+    \?)
+      ARGS+="$ARGS $OPTARG"
+      echo $ARGS $OPTARG $opt
+      ;;
+  esac
+done
+
+OLD=$(pwd)
+if [[ ! -e ~/.ansible-deploy ]]; then
+  git checkout https://github.com/moshloop/ansible-deploy.git ~/.ansible-deploy
+   ~/.ansible-deploy/init.sh
+else
+  cd ~/.ansible-deploy
+  git pull upstream
+  ./init.sh
+fi
+cd $OLD
+
+ansible-playbook ~/.ansible-deploy/deploy.yml $@
