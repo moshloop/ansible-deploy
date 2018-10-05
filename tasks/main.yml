@@ -1,3 +1,4 @@
+- debug: msg="Deploying {{inventory_hostname}} to {{target}}"
 - file:
     path: build
     state: directory
