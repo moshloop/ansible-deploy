@@ -27,6 +27,11 @@ OLD=$(pwd)
 if [[ ! -e ~/.ansible-deploy ]]; then
   git clone https://github.com/moshloop/ansible-deploy.git ~/.ansible-deploy
 fi
+
+if [[ ! -e ~/.ansible/roles/extras ]]; then
+  mkdir -p ~/.ansible/roles/
+  git clone https://github.com/moshloop/ansible-extras.git ~/.ansible/roles/extras
+fi
 cd $OLD
 
 ansible-playbook ~/.ansible-deploy/deploy.yml $@
