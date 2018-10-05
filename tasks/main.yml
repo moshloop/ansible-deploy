@@ -37,11 +37,11 @@
   include: '{{item}}'
   vars:
     include_dir: "{{item | dirname }}"
-  with_items: "{{hooks | deploy_hooks('after', False, groups) }}"
+  with_items: "{{hooks | deploy_hooks('after', False, group_names) }}"
 
 - name: Running after (run_once) hooks
   vars:
     include_dir: "{{item | dirname }}"
   include: '{{item}}'
-  with_items: "{{hooks | deploy_hooks('after', True, groups) }}"
+  with_items: "{{hooks | deploy_hooks('after', True, group_names) }}"
 
