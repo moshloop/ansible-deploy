@@ -23,15 +23,15 @@ while getopts ":i:, :h, :t:" opt; do
   esac
 done
 
-OLD=$(pwd)
-if [[ ! -e ~/.ansible-deploy ]]; then
-  git clone https://github.com/moshloop/ansible-deploy.git ~/.ansible-deploy
+
+mkdir -p ~/.ansible/roles/
+if [[ ! -e ~/.ansible/roles/deploy ]]; then
+  git clone https://github.com/moshloop/ansible-deploy.git ~/.ansible/roles/deploy
 fi
 
 if [[ ! -e ~/.ansible/roles/extras ]]; then
-  mkdir -p ~/.ansible/roles/
   git clone https://github.com/moshloop/ansible-extras.git ~/.ansible/roles/extras
 fi
-cd $OLD
 
-ansible-playbook ~/.ansible-deploy/deploy.yml $@
+cp ~/.ansible/roles/deploy/deploy.yml .ansible-deploy.yml
+ansible-playbook .ansible-deploy.yml $@
