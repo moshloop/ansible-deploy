@@ -14,10 +14,9 @@ Opionated role for creating shortcuts for various ansible tasks
 
 <img src="images/ansible.png" height=24 align=top> [Ansible](./targets/ansible.md) <br>
 <img src="images/ecs.png" height=24 align=top> [AWS ECS](./targets/ecs.md)<br>
-
+<img src="images/cloudinit.png" height=24 width="24" align=top> [cloudinit](./targets/cloudinit.md) <br>
 #### Roadmap
 
-<img src="images/cloudinit.png" height=24 width="24" align=top> Cloudinit <br>
 <img src="images/kubernetes.png"  height=24 width="24" align=top> Kubernetes <br>
 <img src="images/swarm.png" height=24 width="24" align=top> Swarm <br>
 
