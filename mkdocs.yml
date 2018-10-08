@@ -24,7 +24,11 @@ nav:
     - Volumes: ./storage/#volumes
     - Mounts: ./storage/#mounts
   - Hooks: ./hooks.md
-  - Ansible Filters/Modules: ./ansible-addons.md
+  - Ansible Suite:
+    - ansible-extras: ./ansible-addons.md
+    - ansible-run: https://www.moshloop.com/ansible-run
+    - ansible-provision: https://www.moshloop.com/ansible-provision
+    - ansible-dependencies: https://github.com/moshloop/ansible-dependencies
 
 
 markdown_extensions:
