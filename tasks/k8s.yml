@@ -1,0 +1,9 @@
+- set_fact:
+    cluster_name: "{{cluster_name | default(envFull) }}"
+    docker_registry: "{{ docker_registry | default(account_id | string + '.dkr.ecr.' + region + '.amazonaws.com') }}"
+
+- template:
+    src: k8s.yml.tpl
+    dest: build/k8s.yml
+  register: build
+  check_mode: no

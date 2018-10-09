@@ -1,4 +1,4 @@
-- debug: msg="Parsing docker compose v3 {{item}}"
+- debug: msg="Parsing docker compose v3 {{item}}" verbosity=1
 
 - include_vars:
     file: "{{item}}"

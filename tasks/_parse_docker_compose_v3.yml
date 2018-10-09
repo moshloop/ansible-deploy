@@ -1,4 +1,4 @@
-- debug: var=svc
+- debug: var=svc verbosity=2
 
 - set_fact:
     container: "{{svc.value}}"
@@ -39,6 +39,6 @@
     labels: "{{svc.value.labels}}"
   when: svc.value.labels is mapping
 
-- debug: var=containers
+- debug: var=containers verbosity=1
 - set_fact:
     containers: "{{containers + [{'image': image,'service': service, 'labels': labels, 'cpu': cpu, 'env': env,  'mem': mem, 'docker_opts':  docker_opts,'docker_args':docker_args,'args': args,'network': network,'volumes': volumes,'ports': ports, 'replicas': replicas   }] }}"

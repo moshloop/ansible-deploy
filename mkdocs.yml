@@ -14,6 +14,7 @@ nav:
     - Ansible: ./targets/ansible.md
     - AWS ECS: ./targets/ecs.md
     - Cloudinit: ./targets/cloudinit.md
+    - Kubernetes: ./targets/kubernetes.md
   - Interfaces:
     - Containers: ./containers.md
     - Commands: ./commands.md

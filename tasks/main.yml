@@ -7,6 +7,11 @@
     - always
   run_once: true
 
+
+- add_host:
+    name: "{{inventory_hostname}}"
+    groups: "{{target}}"
+
 - name: Running before (run_once) hooks {{hooks}}
   include_tasks: '{{item}}'
   vars:
@@ -28,6 +33,10 @@
 
 - include: ecs.yml
   when: target == 'ecs'
+  run_once: true
+
+- include: k8s.yml
+  when: target == 'k8s' or target == 'kubernetes'
   run_once: true
 
 - include: cloudinit.yml
