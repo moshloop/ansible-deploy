@@ -11,7 +11,7 @@ extra_javascript:
 nav:
   - Getting Started: ./index.md
   - Targets:
-    - Ansible: ./targets/ansible.md
+    - Ansible/SSH: ./targets/ansible-ssh.md
     - AWS ECS: ./targets/ecs.md
     - Cloudinit: ./targets/cloudinit.md
     - Kubernetes: ./targets/kubernetes.md

@@ -1,4 +1,8 @@
 # <img src="../../images/ansible.png" height=24>  Ansible
+
+Ansible/SSH is the default deployment target. It will connect to inventory hosts via the connection plugin (defaults to SSH) and executes ansible modules.
+
+
 | Option           | Description                                  | Support |
 | ---------------- | -------------------------------------------- | -------- |
 | files            | Map of files to copy                         | [native copy](https://docs.ansible.com/ansible/latest/modules/copy_module.html) module |
