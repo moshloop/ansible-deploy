@@ -1,6 +1,13 @@
 # <img src="../../images/ecs.png" height=24> AWS ECS
 
+The ECS deployment target generates a cloudformation template (`build/ecs.yml`) with all the components needed to create and deploy to an ECS cluster. It will then upload and execute the cloudformation script used the provided arguments.
+
+!!! example ""
+
+​    
+
 ### Supported Arguments
+
 | Option         | Description                    | Support                             |
 | -------------- | ------------------------------ | ----------------------------------- |
 | files          | Map of files to copy           | ✖                                   |

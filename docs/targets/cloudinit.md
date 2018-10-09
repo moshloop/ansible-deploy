@@ -1,7 +1,7 @@
 
 # <img src="../../images/cloudinit.png" height=24> Cloud init
 
-The cloudinit target will generate a config locally suitable for use in tools like AWS User Data etc.
+The cloudinit target will generate a config file (`build/{{inventory_hostname}}.txt`) suitable for use in tools like AWS User Data etc. [ansible-provision](https://www.moshloop.com/ansible-provision) uses this target to trigger mount and format volumes on start and to trigger deployment scripts.
 
 ### Supported Arguments
 | Option         | Description                    | Support                             |
