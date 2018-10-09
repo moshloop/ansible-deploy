@@ -334,6 +334,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../kubernetes/" title="Kubernetes" class="md-nav__link">
+      Kubernetes
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -602,7 +614,7 @@
                 
                 
                 <h1 id="cloud-init"><img src="../../images/cloudinit.png" height=24> Cloud init</h1>
-<p>The cloudinit target will generate a config locally suitable for use in tools like AWS User Data etc.</p>
+<p>The cloudinit target will generate a config file (<code>build/{{inventory_hostname}}.txt</code>) suitable for use in tools like AWS User Data etc. <a href="https://www.moshloop.com/ansible-provision">ansible-provision</a> uses this target to trigger mount and format volumes on start and to trigger deployment scripts.</p>
 <h3 id="supported-arguments">Supported Arguments</h3>
 <table>
 <thead>
@@ -690,13 +702,13 @@
           </a>
         
         
-          <a href="../../containers/" title="Containers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../kubernetes/" title="Kubernetes" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Containers
+                Kubernetes
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
