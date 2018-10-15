@@ -1,4 +1,12 @@
 - debug: msg="Deploying {{inventory_hostname}} to {{target}}"
+- set_fact:
+    sysctls: "{{ sysctls | default({}) }}"
+    files: "{{ files | default({}) }}"
+    templates: "{{ templates | default({}) }}"
+    mounts: "{{ mounts | default({}) }}"
+    environment: "{{ environment | default({}) }}"
+    env_vars: "{{ env_vars | default({}) }}"
+
 - file:
     path: build
     state: directory

@@ -1,11 +1,5 @@
-sysctls: {}
 hooks: []
 containers: []
-files: {}
-templates: {}
-mounts: {}
-environment: {}
-env_vars: {}
 service_dns:
 target: ansible
 docker_compose_v3: []
