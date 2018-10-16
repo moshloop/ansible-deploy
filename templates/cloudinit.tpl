@@ -7,8 +7,10 @@ users:
 {% for user in users %}
     - name: {{user.name}}
       ssh-authorized-keys:
-{% for key in user.ssh_keys | reject('equalto', '') %}
+{% for _key in user.ssh_keys | reject('equalto', '') | list %}
+{% for key in _key | split("\n") %}
         - {{key}}
+{% endfor %}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -23,6 +25,16 @@ write_files:
       permissions: '0755'
       content: |
         #!/bin/bash
+
+        if ! which bootstrap_volume 2&>1 > /dev/null; then
+            echo "Systools not detected, installing..."
+            rpm -i https://github.com/moshloop/systools/releases/download/3.2/systools-3.2-1.x86_64.rpm
+        fi
+
+        if [[ -e /sbin/mkfs.xfs ]]; then
+          echo "xfs not installed, installing..."
+          yum install -y xfsprogs xfsdump
+        fi
 {% if volumes is defined %}
 {% for vol in volumes %}
 {% if vol.format is defined %}
@@ -33,7 +45,7 @@ write_files:
 {% if instance_volumes is defined %}
 {% for vol in instance_volumes %}
 {% if vol.format is defined %}
-      bootstrap_volume {{vol.dev}} {{vol.mount}} {{vol.format}} {{vol.owner | default('""')}} {{vol.size | default('')}}
+        bootstrap_volume {{vol.dev}} {{vol.mount}} {{vol.format}} {{vol.owner | default('""')}} {{vol.size | default('')}}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -67,4 +79,5 @@ runcmd:
     - [ cloud-init-per, instance, install-{{pkg | basename | splitext | first}}, sh, "-c", "/usr/bin/rpm -U {{pkg}}"]
 {% endfor %}
 
-    - [ cloud-init-per, instance, bootstrap, "/usr/bin/cloudinit.sh" ]
+    - [ cloud-init-per, instance, cloudinit, "/usr/bin/cloudinit.sh" ]
+    - [ cloud-init-per, instance, bootstrap, "/usr/bin/bootstrap_volumes.sh" ]

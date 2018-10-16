@@ -1,3 +1,5 @@
   - name: rendering user-data for {{inventory_hostname}}
-    template: src="cloudinit.tpl" dest="build/{{inventory_hostname}}.txt"
-    delegate_to: localhost
+    local_action: template src="cloudinit.tpl" dest="build/{{inventory_hostname}}.txt"
+    register: temp
+
+  - debug: var=temp
