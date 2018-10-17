@@ -629,8 +629,11 @@
                 
                 <h1 id="aws-ecs"><img src="../../images/ecs.png" height=24> AWS ECS</h1>
 <p>The ECS deployment target generates a cloudformation template (<code>build/ecs.yml</code>) with all the components needed to create and deploy to an ECS cluster. It will then upload and execute the cloudformation script used the provided arguments.</p>
-<div class="admonition example"></div>
-<p>​    </p>
+<div class="admonition example">
+<div class="codehilite"><pre><span></span>ansible-deploy -e <span class="nv">target</span><span class="o">=</span>ecs
+</pre></div>
+
+</div>
 <h3 id="supported-arguments">Supported Arguments</h3>
 <table>
 <thead>
