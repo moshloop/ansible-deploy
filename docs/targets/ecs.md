@@ -3,8 +3,9 @@
 The ECS deployment target generates a cloudformation template (`build/ecs.yml`) with all the components needed to create and deploy to an ECS cluster. It will then upload and execute the cloudformation script used the provided arguments.
 
 !!! example ""
-
-​    
+    ```bash
+    ansible-deploy -e target=ecs
+    ```
 
 ### Supported Arguments
 
