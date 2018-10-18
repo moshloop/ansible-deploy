@@ -20,18 +20,20 @@ for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks
       if name.startswith('.') or root.startswith('./.'):
         continue
       _files.append("%s/%s" % (root,name))
-  data_files.append(("%s/%s" % (base, dir), _files))
+  data_files.append(("%s/%s" % (role_name, dir), _files))
 
 class link_role(install):
     def run(self):
         install.run(self)
-        dist = "%s/%s" % (self.install_data, self.config_vars['dist_name'])
+        dist = self.install_data + "/" + role_name
         if not dist.startswith('/'):
           dist = "%s/%s" % (os.getcwd(), dist)
         role = "/etc/ansible/roles/%s" % role_name
-        if os.isdir(dist):
+        if os.path.isdir(dist):
           print ("Renaming %s to %s" % (dist, role))
-          shutil.rmtree(role)
+          if os.path.isdir(role):
+            shutil.rmtree(role)
+          os.makedirs("/etc/ansible/roles/")
           os.renames(dist, role)
 
 setup(
