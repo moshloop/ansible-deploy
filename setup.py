@@ -25,6 +25,7 @@ print data_files
 setup(
     name = __name__,
     version = __version__,
+    install_requires = 'ansible-extras',
     packages = [__name__.replace("-", "_")],
     data_files = data_files,
     url = 'https://www/github.com/moshloop/ansible-deploy',
