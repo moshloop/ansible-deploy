@@ -9,12 +9,16 @@ __name__ = 'ansible-deploy'
 cwd = os.getcwd()
 base = '/etc/ansible/roles/%s' % __name__.split('-')[1]
 data_files = []
-spec = pathspec.PathSpec.from_lines('gitwildmatch',open('.gitignore').read().splitlines())
+
+spec = None
+
+if os.path.isfile('.gitignore'):
+  spec = pathspec.PathSpec.from_lines('gitwildmatch',open('.gitignore').read().splitlines())
 for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks']:
   _files = []
   for root, dirs, files in os.walk(dir, topdown=False):
    for name in files:
-      if spec.match_file(os.path.join(root, name)) or name.startswith('.') or root.startswith('./.'):
+      if (spec != None and spec.match_file(os.path.join(root, name))) or name.startswith('.') or root.startswith('./.'):
         continue
       _files.append("%s/%s" % (root,name))
   data_files.append(("%s/%s" % (base, dir), _files))
