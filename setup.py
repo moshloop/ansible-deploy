@@ -16,11 +16,8 @@ for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks
    for name in files:
       if spec.match_file(os.path.join(root, name)) or name.startswith('.') or root.startswith('./.'):
         continue
-      print name
       _files.append("%s/%s" % (root,name))
   data_files.append(("%s/%s" % (base, dir), _files))
-
-print data_files
 
 setup(
     name = __name__,
