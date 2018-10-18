@@ -29,9 +29,10 @@ class link_role(install):
         if not dist.startswith('/'):
           dist = "%s/%s" % (os.getcwd(), dist)
         role = "/etc/ansible/roles/%s" % role_name
-        print ("Renaming %s to %s" % (dist, role))
-        shutil.rmtree(role)
-        os.renames(dist, role)
+        if os.isdir(dist):
+          print ("Renaming %s to %s" % (dist, role))
+          shutil.rmtree(role)
+          os.renames(dist, role)
 
 setup(
     name = __name__,
