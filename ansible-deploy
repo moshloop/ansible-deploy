@@ -23,15 +23,6 @@ while getopts ":i:, :h, :t:" opt; do
   esac
 done
 
-
-mkdir -p ~/.ansible/roles/
-if [[ ! -e ~/.ansible/roles/deploy ]]; then
-  git clone https://github.com/moshloop/ansible-deploy.git ~/.ansible/roles/deploy
-fi
-
-if [[ ! -e ~/.ansible/roles/extras ]]; then
-  git clone https://github.com/moshloop/ansible-extras.git ~/.ansible/roles/extras
-fi
-
-cp ~/.ansible/roles/deploy/deploy.yml .ansible-deploy.yml
+cp /etc/ansible/roles/deploy/deploy.yml .ansible-deploy.yml
+ANSIBLE_HASH_BEHAVIOUR=merge
 ansible-playbook .ansible-deploy.yml $@
