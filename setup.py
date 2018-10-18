@@ -25,7 +25,9 @@ for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks
 class link_role(install):
     def run(self):
         install.run(self)
-        dist = "%s/%s/%s" % (os.getcwd(), self.install_data, self.config_vars['dist_name'])
+        dist = self.install_data
+        if not self.install_data.startswith('/'):
+          dist = "%s/%s/%s" % (os.getcwd(), self.install_data, self.config_vars['dist_name'])
         role = "/etc/ansible/roles/%s" % role_name
         print ("Renaming %s to %s" % (dist, role))
         shutil.rmtree(role)
