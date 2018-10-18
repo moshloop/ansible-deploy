@@ -32,8 +32,10 @@ class link_role(install):
         if os.path.isdir(dist):
           print ("Renaming %s to %s" % (dist, role))
           if os.path.isdir(role):
+            print ("cleaning %s" % role)
+            import shutil
             shutil.rmtree(role)
-          os.makedirs("/etc/ansible/roles/")
+          check_output("mkdir -p /etc/ansible/roles", shell=True)
           os.renames(dist, role)
 
 setup(
