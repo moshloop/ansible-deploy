@@ -22,7 +22,6 @@ for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks
         continue
       _files.append("%s/%s" % (root,name))
   data_files.append(("%s/%s" % (base, dir), _files))
-  data_files.append(('.gitignore','.gitignore'))
 
 class link_role(install):
     def run(self):
