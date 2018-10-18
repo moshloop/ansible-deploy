@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 from ansible_deploy import __version__
 import os
+import shutil
 from os.path import isfile
 
 
