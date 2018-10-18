@@ -18,6 +18,16 @@ for dir in ['library', 'meta', 'filter_plugins', 'templates', 'defaults', 'tasks
         continue
       _files.append("%s/%s" % (root,name))
   data_files.append(("%s/%s" % (base, dir), _files))
+  data_files.append(('.gitignore','.gitignore'))
+
+class link_role(install):
+    def run(self):
+        install.run(self)
+        dist = "%s/%s/%s" % (os.getcwd(), self.install_data,self.config_vars['dist_name'])
+        role = "/etc/ansible/roles/%s" % role_name
+        print ("Renaming %s to %s" % (dist,role))
+        shutil.rmtree(role)
+        os.renames(dist,role)
 
 setup(
     name = __name__,
@@ -25,6 +35,7 @@ setup(
     install_requires = 'ansible-extras',
     packages = [__name__.replace("-", "_")],
     data_files = data_files,
+    cmdclass = {'install': link_role},
     url = 'https://www/github.com/moshloop/ansible-deploy',
     author = 'Moshe Immerman', author_email = 'moshe.immerman@gmail.com'
 )
