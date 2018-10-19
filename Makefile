@@ -11,7 +11,7 @@ endif
 package:
 	$(shell rm *.rpm || true)
 	$(shell rm *.deb || true)
-	docker run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) alanfranz/fpm-within-docker:ubuntu-xenial fpm  -s dir -t deb -n $(NAME) -v $(VERSION) -x "*.DS_Store"/ -x ".git" ./=/etc/ansible/roles/extras
+	docker run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) alanfranz/fpm-within-docker:ubuntu-xenial fpm  -s dir -t deb -n $(NAME) -v $(VERSION) -x "*.DS_Store"/ -x ".git" ./=/etc/ansible/roles/deploy
 	mv *.deb $(NAME).deb
-	docker run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) alanfranz/fpm-within-docker:centos-7 fpm  -s dir -t rpm -n $(NAME) -v $(VERSION) -x "*.DS_Store" -x ".git" ./=/etc/ansible/roles/extras
+	docker run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) alanfranz/fpm-within-docker:centos-7 fpm  -s dir -t rpm -n $(NAME) -v $(VERSION) -x "*.DS_Store" -x ".git" ./=/etc/ansible/roles/deploy
 	mv *.rpm $(NAME).rpm
