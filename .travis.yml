@@ -8,3 +8,14 @@ script:
   - mkdocs gh-deploy -v --remote-name docs
   - python setup.py sdist
   - twine upload dist/*.tar.gz || echo already exists
+  - make
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file:
+    - "*.rpm"
+    - "*.deb"
+  skip_cleanup: true
+  on:
+    tags: true
