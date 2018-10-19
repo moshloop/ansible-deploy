@@ -31,7 +31,7 @@ install_gh_pkg() {
   if which rpm 2>&1 > /dev/null; then
     rpm -i $download/$file.rpm
   elif which dpkg 2>&1 > /dev/null; then
-    tmp=$(mktemp --suffix deb)
+    tmp=$(mktemp --suffix .deb)
     curl -Lk --silent $download/$file.deb > $tmp
     dpkg -i --force all $tmp
     rm $tmp
