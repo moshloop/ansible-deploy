@@ -42,6 +42,7 @@ setup(
     name = __name__,
     version = __version__,
     install_requires = ['ansible-extras'],
+    scripts = ['ansible-deploy'],
     packages = [__name__.replace("-", "_")],
     data_files = data_files,
     cmdclass = {'install': link_role},
