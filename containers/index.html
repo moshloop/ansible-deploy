@@ -36,7 +36,7 @@
     
     
       
-        <title>Load Balancing - Ansible Deploy</title>
+        <title>Containers - Ansible Deploy</title>
       
     
     
@@ -90,7 +90,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#loadbalancers" tabindex="1" class="md-skip">
+      <a href="../#arguments" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -116,7 +116,7 @@
                 Ansible Deploy
               </span>
               <span class="md-header-nav__topic">
-                Load Balancing
+                Containers
               </span>
             
           
@@ -336,11 +336,52 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../containers/" title="Containers" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Containers
+      </label>
+    
+    <a href="./" title="Containers" class="md-nav__link md-nav__link--active">
       Containers
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arguments" title="Arguments" class="md-nav__link">
+    Arguments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" title="Docker Compose" class="md-nav__link">
+    Docker Compose
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -384,59 +425,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Load Balancing
-      </label>
-    
-    <a href="./" title="Load Balancing" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../load-balancing/" title="Load Balancing" class="md-nav__link">
       Load Balancing
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#loadbalancers" title="Loadbalancers" class="md-nav__link">
-    Loadbalancers
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker-compose" title="Docker Compose" class="md-nav__link">
-    Docker Compose
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arguments" title="Arguments" class="md-nav__link">
-    Arguments
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -596,8 +589,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#loadbalancers" title="Loadbalancers" class="md-nav__link">
-    Loadbalancers
+  <a href="#arguments" title="Arguments" class="md-nav__link">
+    Arguments
   </a>
   
 </li>
@@ -605,13 +598,6 @@
         <li class="md-nav__item">
   <a href="#docker-compose" title="Docker Compose" class="md-nav__link">
     Docker Compose
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arguments" title="Arguments" class="md-nav__link">
-    Arguments
   </a>
   
 </li>
@@ -632,85 +618,148 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/moshloop/ansible-deploy/edit/master/docs/load-balancing.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/moshloop/ansible-deploy/edit/master/docs/containers.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>Load Balancing</h1>
+                  <h1>Containers</h1>
                 
-                <h3 id="loadbalancers">Loadbalancers</h3>
-<h3 id="docker-compose">Docker Compose</h3>
-<p>Load balancers can be specified using annotations in docker-compose files:</p>
-<div class="admonition example">
-<p class="admonition-title">files/docker-compose.yml</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">ui</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">labels</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">elb.ports</span><span class="p p-Indicator">:</span> <span class="s">&quot;443:8166&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">elb.type</span><span class="p p-Indicator">:</span> <span class="s">&quot;https:http&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">elb.scheme</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">internet-facing</span>
-      <span class="l l-Scalar l-Scalar-Plain">elb.subnet</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Public</span>
-      <span class="l l-Scalar l-Scalar-Plain">elb.healthcheck-path</span><span class="p p-Indicator">:</span> <span class="s">&quot;/health&quot;</span>
-</pre></div>
-
-</div>
-<h3 id="arguments">Arguments</h3>
+                <h3 id="arguments">Arguments</h3>
 <table>
 <thead>
 <tr>
-<th>Name</th>
+<th>Argument</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>port</td>
+<td><strong>image</strong></td>
+<td>[Required]</td>
+<td>Docker image to run</td>
+</tr>
+<tr>
+<td>service</td>
+<td base="base" image="image" name="name"></td>
+<td>The name of the systemd service</td>
+</tr>
+<tr>
+<td>env</td>
+<td></td>
+<td>A dictionary of environment variables to pass through</td>
+</tr>
+<tr>
+<td>labels</td>
+<td></td>
+<td>A dictionary of labels to add to the container</td>
+</tr>
+<tr>
+<td>docker_args</td>
+<td></td>
+<td>Additional arguments to the docker client e.g. <code>-p 8080:8080</code></td>
+</tr>
+<tr>
+<td>docker_opts</td>
+<td></td>
+<td>Additional options to the docker client e.g. <code>-H unix:///tmp/var/run/docker.sock</code></td>
+</tr>
+<tr>
+<td>args</td>
+<td></td>
+<td>Additional arguments to the container</td>
+</tr>
+<tr>
+<td>volumes</td>
+<td></td>
+<td>List of volume mappings</td>
+</tr>
+<tr>
+<td>ports</td>
+<td></td>
+<td>List of port mappings</td>
+</tr>
+<tr>
+<td>network</td>
+<td>user-bridge</td>
+<td></td>
+</tr>
+<tr>
+<td>cpu</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>type</td>
-<td>http</td>
-<td>http,https,tcp</td>
-</tr>
-<tr>
-<td>scheme</td>
-<td>internal</td>
-<td>internet-facing</td>
-</tr>
-<tr>
-<td>subnet</td>
-<td><code>{{subnet_name}}</code></td>
-<td></td>
-</tr>
-<tr>
-<td>healthcheck-path</td>
-<td>/</td>
-<td></td>
-</tr>
-<tr>
-<td>healthcheck-port</td>
-<td><code>{{port}}</code></td>
-<td></td>
-</tr>
-<tr>
-<td>healthcheck-protocol</td>
-<td><code>{{type}}</code></td>
-<td></td>
-</tr>
-<tr>
-<td>certificate-arn</td>
+<td>mem</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>security-groups</td>
-<td></td>
+<td>replicas</td>
+<td>1</td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition example">
+<p class="admonition-title">play.yml</p>
+<div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+  <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">deploy</span>
+  <span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
+         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
+           <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
+           <span class="l l-Scalar l-Scalar-Plain">env</span><span class="p p-Indicator">:</span>
+             <span class="l l-Scalar l-Scalar-Plain">DOMAIN</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost.com</span>
+         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
+           <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx2</span>
+           <span class="l l-Scalar l-Scalar-Plain">docker_args</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">-p 8080:80</span>
+</pre></div>
+
+</div>
+<h3 id="docker-compose">Docker Compose</h3>
+<p>Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:</p>
+<ul>
+<li>ports</li>
+<li>environment</li>
+<li>image</li>
+<li>deploy/limits</li>
+<li>deploy/replicas</li>
+<li>networks (Not supported on ECS)</li>
+<li>ui.labels (See <a href="../../load-balancing/">Load Balancing</a>)</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">group_vars/group.yml</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker_compose_v3</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">files/docker-compose.yml</span>
+</pre></div>
+
+</div>
+<div class="admonition example">
+<p class="admonition-title">files/docker-compose.yml</p>
+<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">gateway</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">gateway:4.1.0-SNAPSHOT</span>
+    <span class="l l-Scalar l-Scalar-Plain">deploy</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2G</span>
+    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TZ=Africa/Harare</span>
+    <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;8166:8166&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
+<span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">user</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">external</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+</pre></div>
+
+</div>
+<p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
+<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay</p>
                 
                   
                 
@@ -731,7 +780,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../template/" title="Templates" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../targets/kubernetes/" title="Kubernetes" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -740,19 +789,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Templates
+                Kubernetes
               </span>
             </div>
           </a>
         
         
-          <a href="../environment/" title="Environment" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../commands/" title="Commands" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Environment
+                Commands
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
