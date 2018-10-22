@@ -6,6 +6,18 @@ else
   VERSION := $(shell git describe --abbrev=0 --tags)-debug
 endif
 
+.PHONY: docs
+docs:
+	pip install mkdocs mkdocs-material pymdown-extensions Pygments
+	git remote add docs "https://$GH_TOKEN@github.com/moshloop/ansible-deploy.git"
+	git fetch docs && git fetch docs gh-pages:gh-pages
+	mkdocs gh-deploy -v --remote-name docs
+
+.PHONE: publish
+publish:
+	pip install twine
+	python setup.py sdist
+	twine upload dist/*.tar.gz || echo already exists
 
 .PHONY: package
 package:

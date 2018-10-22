@@ -28,7 +28,7 @@ write_files:
 
         if ! which bootstrap_volume 2&>1 > /dev/null; then
             echo "Systools not detected, installing..."
-            rpm -i https://github.com/moshloop/systools/releases/download/3.2/systools-3.2-1.x86_64.rpm
+            rpm -i https://github.com/moshloop/systools/releases/download/3.1/systools-3.1-1.x86_64.rpm
         fi
 
         if [[ -e /sbin/mkfs.xfs ]]; then

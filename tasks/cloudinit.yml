@@ -1,5 +1,11 @@
-  - debug: vars=users
+  - debug: var=users verbosity=1
+  - debug: var=commands verbosity=1
+  - debug: var=volumes verbosity=1
+
   - file: path="{{inventory_dir}}/build/" state=directory
+
   - name: rendering user-data for {{inventory_hostname}}
     local_action: template src="cloudinit.tpl" dest="{{inventory_dir}}/build/{{inventory_hostname}}.txt"
     register: temp
+
+  - debug: msg="Creating cloudinit file {{inventory_dir}}/build/{{inventory_hostname}}.txt"

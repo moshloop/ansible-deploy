@@ -3,14 +3,21 @@
   changed_when: false
   register: keyExists
 
-- lineinfile:
+- shell: "grep {{item.key}}={{item.value}} /etc/environment"
+  failed_when: false
+  changed_when: false
+  register: keyValExists
+
+- name: Updating {{item.key}}={{item.value}} from {{keyExists.stdout}}
+  lineinfile:
     path: /etc/environment
     regexp: "{{item.key}}=.*"
     line: "{{item.key}}={{item.value}}"
     create: true
-  when: keyExists.rc == 0
+  when: keyExists.rc == 0 and keyValExists != 0
 
-- lineinfile:
+- name: Inserting {{item.key}}={{item.value}}
+  lineinfile:
     path: /etc/environment
     line: "{{item.key}}={{item.value}}"
     create: true

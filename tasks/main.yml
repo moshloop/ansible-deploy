@@ -19,6 +19,7 @@
 - add_host:
     name: "{{inventory_hostname}}"
     groups: "{{target}}"
+  changed_when: false
 
 - name: Running before (run_once) hooks {{hooks}}
   include_tasks: '{{item}}'
