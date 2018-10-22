@@ -1,6 +1,9 @@
 - set_fact:
     cluster_name: "{{cluster_name | default(envFull) }}"
-    docker_registry: "{{ docker_registry | default(account_id | string + '.dkr.ecr.' + region + '.amazonaws.com') }}"
+
+- set_fact:
+      docker_registry_host: "{{ account_id }}.dkr.ecr.{{region}}.amazonaws.com"
+  when: account_id is defined and region is defined and docker_registry_host is not defined
 
 - template:
     src: k8s.yml.tpl
