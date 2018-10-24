@@ -1,52 +1,56 @@
 #!/bin/bash
-target=ansible
+DIR=~/.ansible/roles/deploy
+GIT_BASE=${GIT_BASE:-https://github.com/moshloop}
 inventory=
 ARGS=
-while getopts ":i:, :h, :t:" opt; do
+while getopts ":i:, :h, " opt; do
   case $opt in
     h)
       echo "USAGE: ansible-deploy [any ansible-playbook arguments]"
       exit
       ;;
-    t)
-    target=$OPTARG
-      ;;
-
     i)
     inventory=$OPTARG
       ;;
-
-    \?)
-      ARGS+="$ARGS $OPTARG"
-      echo $ARGS $OPTARG $opt
-      ;;
-  esac
+    esac
 done
 
-install_gh_pkg() {
-  echo "Installing $1"
-  file=$(echo $1 | cut -d/ -f2)
-  latest=$(curl --silent -L https://api.github.com/repos/$1/releases/latest | jq -rc '.tag_name')
-  download="https://github.com/$1/releases/download/$latest"
-  if which rpm 2>&1 > /dev/null; then
-    rpm -i $download/$file.rpm
-  elif which dpkg 2>&1 > /dev/null; then
-    tmp=$(mktemp --suffix .deb)
-    curl -Lk --silent $download/$file.deb > $tmp
-    dpkg -i --force all $tmp
-    rm $tmp
+if [[ "$inventory" == "" && -d inventory ]]; then
+  ARGS+=" -i inventory"
+  inventory="inventory"
+fi
+
+checkout_role() {
+  if [[ ! -e $DIR ]]; then
+    git clone $GIT_BASE/ansible-deploy.git $DIR
   fi
+
+  desired_tag=$( ansible-inventory -i $inventory --list | jq -r '._meta.hostvars | values[] | .ansible_deploy_version' | head -n1)
+
+  pwd=$(pwd)
+  cd $DIR
+  current_tag=$(git describe --tags)
+
+  if [[ "$desired_tag" != "null" && "$desired_tag" != "$current_tag" ]]; then
+    echo "Checking out $desired_tag"
+    git fetch
+    git checkout $desired_tag
+  fi
+
+  cd $pwd
 }
 
-if [[ ! -e /etc/ansible/roles/extras && ! -e ~/.ansible/roles/extras ]]; then
-  install_gh_pkg "moshloop/ansible-extras"
-fi
+link_playbook() {
+  ln -s $DIR/deploy.yml .ansible-deploy.yml
 
-if [[ ! -e /etc/ansible/roles/deploy && ! -e ~/.ansible/roles/deploy ]]; then
-  install_gh_pkg "moshloop/ansible-deploy"
-fi
+  function finish {
+    rm .ansible-deploy.yml
+  }
+  trap finish EXIT
+}
 
+checkout_role
+link_playbook
 
-cp /etc/ansible/roles/deploy/deploy.yml .ansible-deploy.yml
 ANSIBLE_HASH_BEHAVIOUR=merge
-ansible-playbook .ansible-deploy.yml $@
+ansible-playbook .ansible-deploy.yml $@ $ARGS
