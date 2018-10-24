@@ -1,12 +1,14 @@
 - set_fact:
-    docker_registry_host: "{{account_id}}.dkr.ecr.{{region}}.amazonaws.com}}"
-  when: docker_registry_host is not defined
+    docker_registry_host: "{{account_id}}.dkr.ecr.{{region}}.amazonaws.com"
+  when: docker_registry_host | is_empty
 
 - include: aws_lookups.yml
 
 - set_fact:
     cluster_name: "{{cluster_name | default(envFull) }}"
     docker_registry: "{{ docker_registry | default(docker_registry_host) }}"
+
+- debug: msg="Deploying to {{cluster_name}} using {{docker_registry}}"
 
 - template:
     src: ecs.cf.tpl

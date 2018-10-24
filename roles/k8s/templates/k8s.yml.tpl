@@ -9,7 +9,7 @@
 {% set templates = container.templates  %}
 {% set files = container.files  %}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{service}}
@@ -23,7 +23,9 @@ spec:
     spec:
       containers:
         - name: {{service}}
+{% if env | length > 0 %}
           env:
+{% endif %}
 {% for key in env %}
             - name: {{key}}
               value: {{env[key]}}
@@ -36,10 +38,11 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: "{{ (container.mem }}Mi"
+              memory: "{{ container.mem }}Mi"
             limits:
               cpu: "{{ 1024 * (container.cpu) | int }}m"
               memory: "{{ container.mem   | int }}Mi"
+
           volumeMounts:
 {% for volume in volumes %}
             - name: "{{ volume.split(':') | first | k8s_name }}"
@@ -125,19 +128,15 @@ spec:
   ports:
 {% if ports | length > 1 %}
 {% for port in ports %}
-{% set from_port = (port | string).split(':')[0] %}
-{% set to_port = (port | string).split(':')[1] %}
     - protocol: TCP
-      port: {{ from_port }}
-      targetPort:  {{ to_port}}
-      name: "port-{{from_port}}"
+      port: {{ port.from_port }}
+      targetPort:  {{ port.to_port}}
+      name: "port-{{port.from_port}}"
 {% endfor %}
 {% else %}
-{% set from_port = (ports[0] | string).split(':')[0] %}
-{% set to_port = (ports[0] | string).split(':')[1] %}
     - protocol: TCP
-      port: {{ from_port }}
-      targetPort: {{ to_port }}
+      port: {{ ports[0].from_port }}
+      targetPort: {{ ports[0].to_port }}
 {% endif %}
 {% endif %}
 {% endfor %}

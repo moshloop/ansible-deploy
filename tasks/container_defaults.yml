@@ -14,9 +14,11 @@
     files: "{{container.files | default({}) }}"
     templates: "{{container.templates | default({}) }}"
     service: "{{container.service | default(container.image.split(':')[0]) | basename}}"
+    env: "{{container.env | default({}) }}"
+    labels: "{{container.labels | default({}) }}"
 
 - set_fact:
-    _container: "{{container | combine({'mem': mem, 'cpu': cpu, 'service': service, 'ports': _ports, 'volumes': volumes, 'files': files, 'templates': templates}) }}"
+    _container: "{{container | combine({'mem': mem, 'cpu': cpu, 'service': service, 'ports': _ports, 'volumes': volumes, 'files': files, 'templates': templates, 'env': env, 'labels': labels}) }}"
 
 - set_fact:
     _containers: "{{_containers| default([]) + [_container]}}"

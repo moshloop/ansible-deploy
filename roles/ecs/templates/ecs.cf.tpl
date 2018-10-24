@@ -172,8 +172,7 @@ Resources:
 {% for group in hostvars.keys() | play_groups(groups, hostvars) %}
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
-{% set service = container.service | default(container.image | basename) %}
-{% set service = service.split(':')[0] %}
+{% set service = container.service  %}
   {{service | cf_name }}:
       Type: AWS::ECS::TaskDefinition
       Properties:
@@ -182,8 +181,8 @@ Resources:
           NetworkMode: bridge
           ExecutionRoleArn: arn:aws:iam::{{account_id}}:role/ECSTaskExecutionRole
           ContainerDefinitions:
-            - Name: {{service | default(container.image) }}
-              Image: {{docker_registry}}/{{container.image}}
+            - Name: {{service }}
+              Image: "{{_vars.docker_registry}}/{{container.image}}"
               Essential: true
               LogConfiguration:
                 LogDriver: awslogs
@@ -197,11 +196,10 @@ Resources:
                 - "{{cluster_name}}.{{domain}}"
                 - "{{domain}}"
               PortMappings:
-}
-}
+
 {% for port in container.ports %}
-                - ContainerPort: "{{ port.split(':')[1] }}"
-                  HostPort: "{{ port.split(':')[0] }}"
+                - ContainerPort: "{{ port.to_port }}"
+                  HostPort: "{{ port.from_port }}"
 {% endfor %}
               Environment:
 {% for key in container.env %}

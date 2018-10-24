@@ -1,10 +1,6 @@
 - set_fact:
     cluster_name: "{{cluster_name | default(envFull) }}"
 
-- set_fact:
-      docker_registry_host: "{{ account_id }}.dkr.ecr.{{region}}.amazonaws.com"
-  when: account_id is defined and region is defined and docker_registry_host is not defined
-
 - debug: var=containers verbosity=2
 
 - template:
@@ -12,3 +8,38 @@
     dest: build/k8s.yml
   register: build
   check_mode: no
+
+- name: Kustomize
+  local_action: shell kustomize build k8s
+  register: kustomize
+  always_run: yes
+  when: "'k8s/kustomization.yaml' | file_exists"
+  tags:
+    - kustomize
+
+- debug: var=kustomize
+  tags:
+    - kustomize
+- fail:
+    msg: "Kustomize failed: \n {{kustomize.stderr}}"
+  when: kustomize.changed and kustomize.rc != 0
+  tags:
+    - kustomize
+
+- file:
+    path: "build/k8s.yml"
+    content: "kustomize.stdout"
+  when: kustomize.changed
+  check_mode: yes
+  tags:
+    - kustomize
+
+# - name: Deploy specs to Kuberenetes
+#   k8s:
+#     state: present
+#     src: build/k8s.yml
+#   run_once: true
+#   delegate_to: localhost
+#   register: deployment
+
+# - debug: var=deployment
