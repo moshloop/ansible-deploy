@@ -9,7 +9,7 @@ def nested_element(object, path):
         if part == "":
             continue
         if part not in obj:
-            raise KeyError("Missing key %s in %s" % (part, obj))
+            return obj
         obj = obj[part]
 
     return obj
