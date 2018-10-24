@@ -1,0 +1,22 @@
+
+- set_fact:
+    _ports: []
+
+- include: _ports.yml
+  loop: "{{container.ports | default([]) }}"
+  loop_control:
+    loop_var: port
+
+- set_fact:
+    mem: "{{container.mem | default('1024') }}"
+    cpu: "{{container.cpu | default('1') }}"
+    volumes: "{{container.volumes | default([]) }}"
+    files: "{{container.files | default({}) }}"
+    templates: "{{container.templates | default({}) }}"
+    service: "{{container.service | default(container.image.split(':')[0]) | basename}}"
+
+- set_fact:
+    _container: "{{container | combine({'mem': mem, 'cpu': cpu, 'service': service, 'ports': _ports, 'volumes': volumes, 'files': files, 'templates': templates}) }}"
+
+- set_fact:
+    _containers: "{{_containers| default([]) + [_container]}}"

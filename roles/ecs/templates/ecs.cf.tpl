@@ -172,7 +172,9 @@ Resources:
 {% for group in hostvars.keys() | play_groups(groups, hostvars) %}
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
-  {{container.service | cf_name }}:
+{% set service = container.service | default(container.image | basename) %}
+{% set service = service.split(':')[0] %}
+  {{service | cf_name }}:
       Type: AWS::ECS::TaskDefinition
       Properties:
           Cpu: "{{ 1024 * container.cpu | int }}"
@@ -180,7 +182,7 @@ Resources:
           NetworkMode: bridge
           ExecutionRoleArn: arn:aws:iam::{{account_id}}:role/ECSTaskExecutionRole
           ContainerDefinitions:
-            - Name: {{container.service | default(container.image) }}
+            - Name: {{service | default(container.image) }}
               Image: {{docker_registry}}/{{container.image}}
               Essential: true
               LogConfiguration:
@@ -188,13 +190,15 @@ Resources:
                 Options:
                   "awslogs-group" : "/fargate/{{cluster_name}}"
                   "awslogs-region": "{{region}}"
-                  "awslogs-stream-prefix": "{{container.service}}"
+                  "awslogs-stream-prefix": "{{service}}"
               Memory: "{{ container.mem }}"
               DnsSearchDomains:
                 - weave.local
                 - "{{cluster_name}}.{{domain}}"
                 - "{{domain}}"
               PortMappings:
+}
+}
 {% for port in container.ports %}
                 - ContainerPort: "{{ port.split(':')[1] }}"
                   HostPort: "{{ port.split(':')[0] }}"
@@ -205,20 +209,20 @@ Resources:
                   Value: {{container.env[key]}}
 {% endfor %}
 
-  {{container.service | cf_name }}Service:
+  {{service | cf_name }}Service:
       Type: AWS::ECS::Service
       Properties:
-        ServiceName: "{{container.service}}"
+        ServiceName: "{{service}}"
         Cluster: !Ref Cluster
-        TaskDefinition: !Ref "{{container.service | cf_name }}"
+        TaskDefinition: !Ref "{{service | cf_name }}"
         DesiredCount: "{{ container.replicas | default(1) }}"
 {% if container.labels['elb.ports'] is defined %}
 {% set elb = container.labels | sub_map('elb.') %}
 {% set port = elb.ports | split(':') | first %}
 {% set target_port = elb.ports | split(':') | last  %}
-{% set elb_name = container.service | cf_name %}
+{% set elb_name = service | cf_name %}
         LoadBalancers:
-          - ContainerName: "{{container.service}}"
+          - ContainerName: "{{service}}"
             ContainerPort: {{ target_port  }}
             TargetGroupArn: !Ref "{{elb_name}}{{port}}"
       DependsOn: ["{{elb_name }}{{port}}Listener", "{{elb_name }}{{port}}"]

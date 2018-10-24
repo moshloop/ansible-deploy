@@ -1,0 +1,6 @@
+galaxy_info:
+  role_name: deploy
+  author: Moshe Immerman
+  license: Apache
+  min_ansible_version: 2.5
+  galaxy_tags: []

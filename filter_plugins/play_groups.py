@@ -1,12 +1,12 @@
 from ansible import errors
 
-import re
-
-def play_groups(play_hosts, groups, hostvars):
+def play_groups(play_hosts, groups, hostvars, exclude=[]):
     _list = []
 
     for host in play_hosts:
         for group in groups:
+            if group in exclude:
+                continue
             if host in groups[group]:
                 _list.append(group)
     return list(set(_list))

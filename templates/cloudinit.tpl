@@ -25,15 +25,18 @@ write_files:
       permissions: '0755'
       content: |
         #!/bin/bash
+        if cat /etc/os-release | grep rhel; then
+          if ! which bootstrap_volume 2&>1 > /dev/null; then
+              echo "Systools not detected, installing..."
+              rpm -i https://github.com/moshloop/systools/releases/download/3.1/systools-3.1-1.x86_64.rpm
+          fi
 
-        if ! which bootstrap_volume 2&>1 > /dev/null; then
-            echo "Systools not detected, installing..."
-            rpm -i https://github.com/moshloop/systools/releases/download/3.1/systools-3.1-1.x86_64.rpm
-        fi
-
-        if [[ -e /sbin/mkfs.xfs ]]; then
-          echo "xfs not installed, installing..."
-          yum install -y xfsprogs xfsdump
+          if [[ -e /sbin/mkfs.xfs ]]; then
+            echo "xfs not installed, installing..."
+            yum install -y xfsprogs xfsdump
+          fi
+        else
+          echo "Non RHEL based OS, skipping bootstrap"
         fi
 {% if volumes is defined %}
 {% for vol in volumes %}
@@ -75,7 +78,7 @@ write_files:
 {% endfor %}
 
 runcmd:
-{% for pkg in packages %}
+{% for pkg in packages | default([]) %}
     - [ cloud-init-per, instance, install-{{pkg | basename | splitext | first}}, sh, "-c", "/usr/bin/rpm -U {{pkg}}"]
 {% endfor %}
 

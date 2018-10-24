@@ -6,6 +6,8 @@
     mounts: "{{ mounts | default({}) }}"
     environment: "{{ environment | default({}) }}"
     env_vars: "{{ env_vars | default({}) }}"
+    domain: "{{ domain | default('local') }}"
+    # internal_domain: "{{ internal_domain | default(domain) | default('local')}}"
 
 - file:
     path: build
@@ -37,18 +39,30 @@
 - include: parse_docker_compose_v3.yml
   with_items: "{{docker_compose_v3}}"
 
-- include: ansible.yml
-  when: target == 'ansible'
+- set_fact:
+    _containers: []
+- include: container_defaults.yml
+  loop: "{{containers}}"
+  loop_control:
+    loop_var: container
 
-- include: ecs.yml
+- set_fact:
+    containers: "{{_containers}}"
+
+- debug: msg="{{role_path}}" verbosity=1
+
+- include_role: name="{{role_path}}/roles/ssh"
+  when: target == 'ansible' or target == 'ssh'
+
+- include_role: name="{{role_path}}/roles/ecs"
   when: target == 'ecs'
   run_once: true
 
-- include: k8s.yml
+- include_role: name="{{role_path}}/roles/k8s"
   when: target == 'k8s' or target == 'kubernetes'
   run_once: true
 
-- include: cloudinit.yml
+- include_role: name="{{role_path}}/roles/cloudinit"
   when: target == 'cloudinit'
 
 - name: Running after hooks
