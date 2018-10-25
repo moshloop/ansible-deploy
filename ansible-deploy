@@ -7,6 +7,7 @@ while getopts ":i:, :h, " opt; do
   case $opt in
     h)
       echo "USAGE: ansible-deploy [any ansible-playbook arguments]"
+      echo "Use ansible-deploy install to install the ansible roles only without execution"
       exit
       ;;
     i)
@@ -49,8 +50,14 @@ link_playbook() {
   trap finish EXIT
 }
 
-checkout_role
-link_playbook
+if [[ "$1" == "install" ]];
+  checkout_role
+else
+  checkout_role
+  link_playbook
+  ANSIBLE_HASH_BEHAVIOUR=merge
+  ansible-playbook .ansible-deploy.yml $@ $ARGS
+fi
 
-ANSIBLE_HASH_BEHAVIOUR=merge
-ansible-playbook .ansible-deploy.yml $@ $ARGS
+
+
