@@ -22,21 +22,24 @@ if [[ "$inventory" == "" && -d inventory ]]; then
   inventory="inventory"
 fi
 
-install_only=$(test "$1" == "install")
+ARG1=$1
 
 checkout_role() {
   if [[ ! -e $DIR ]]; then
     git clone $GIT_BASE/ansible-$ROLE_NAME.git $DIR
   fi
-
-  if $install_only; then
-    exit
-  fi
-
-  echo "Checking desired version"
-  desired_tag=$( ansible-inventory -i $inventory --list | jq -r '._meta.hostvars | values[] | .ansible_$ROLE_NAME_version' | head -n1)
-
   pwd=$(pwd)
+  if [[ "$ARG1" == "install" ]]; then
+    return
+  elif [[  "$ARG1" == "update" ]]; then
+    cd $DIR
+    git fetch --all
+    cd $pwd
+    return
+  fi
+  echo "Checking desired version"
+  desired_tag=$( ansible-inventory -i $inventory --list | jq -r "._meta.hostvars | values[] | .ansible_$ROLE_NAME_version" | head -n1)
+
   cd $DIR
   current_tag=$(git describe --tags)
 
@@ -58,6 +61,11 @@ link_playbook() {
 }
 
 checkout_role
+
+if [[ "$ARG1" == "install" || "$ARG1" == "update" ]]; then
+  exit
+fi
+
 link_playbook
 ANSIBLE_HASH_BEHAVIOUR=merge
 ansible-playbook .ansible-$ROLE_NAME.yml $@ $ARGS
