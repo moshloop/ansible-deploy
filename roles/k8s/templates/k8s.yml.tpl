@@ -38,7 +38,7 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: "{{ container.mem }}Mi"
+              memory: "{{ container.mem | int }}Mi"
             limits:
               cpu: "{{ 1024 * (container.cpu) | int }}m"
               memory: "{{ container.mem   | int }}Mi"
@@ -96,7 +96,7 @@ metadata:
   name: "{{file | k8s_name }}"
 data:
   "{{file | basename}}": |-
-   {{ lookup('template', files[file]) | indent(4) }}
+   {{ lookup('file', files[file]) | indent(4) }}
 {% endfor %}
 
 {% if container.labels is defined and container.labels['elb.ports'] is defined %}
