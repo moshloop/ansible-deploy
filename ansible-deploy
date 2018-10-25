@@ -1,13 +1,14 @@
 #!/bin/bash
-DIR=~/.ansible/roles/deploy
+ROLE_NAME=deploy
+DIR=~/.ansible/roles/$ROLE_NAME
 GIT_BASE=${GIT_BASE:-https://github.com/moshloop}
 inventory=
 ARGS=
 while getopts ":i:, :h, " opt; do
   case $opt in
     h)
-      echo "USAGE: ansible-deploy [any ansible-playbook arguments]"
-      echo "Use ansible-deploy install to install the ansible roles only without execution"
+      echo "USAGE: ansible-$ROLE_NAME [any ansible-playbook arguments]"
+      echo "Use ansible-$ROLE_NAME install to install the ansible roles only without execution"
       exit
       ;;
     i)
@@ -21,18 +22,25 @@ if [[ "$inventory" == "" && -d inventory ]]; then
   inventory="inventory"
 fi
 
+install_only=$(test "$1" == "install")
+
 checkout_role() {
   if [[ ! -e $DIR ]]; then
-    git clone $GIT_BASE/ansible-deploy.git $DIR
+    git clone $GIT_BASE/ansible-$ROLE_NAME.git $DIR
   fi
 
-  desired_tag=$( ansible-inventory -i $inventory --list | jq -r '._meta.hostvars | values[] | .ansible_deploy_version' | head -n1)
+  if $install_only; then
+    exit
+  fi
+
+  echo "Checking desired version"
+  desired_tag=$( ansible-inventory -i $inventory --list | jq -r '._meta.hostvars | values[] | .ansible_$ROLE_NAME_version' | head -n1)
 
   pwd=$(pwd)
   cd $DIR
   current_tag=$(git describe --tags)
 
-  if [[ "$desired_tag" != "null" && "$desired_tag" != "$current_tag" ]]; then
+  if [[ "$desired_tag" != "null" && "$desired_tag" != "" && "$desired_tag" != "$current_tag" ]]; then
     echo "Checking out $desired_tag"
     git fetch
     git checkout $desired_tag
@@ -42,22 +50,14 @@ checkout_role() {
 }
 
 link_playbook() {
-  ln -s $DIR/deploy.yml .ansible-deploy.yml
-
+  ln -s $DIR/$ROLE_NAME.yml .ansible-$ROLE_NAME.yml
   function finish {
-    rm .ansible-deploy.yml
+    rm .ansible-$ROLE_NAME.yml
   }
   trap finish EXIT
 }
 
-if [[ "$1" == "install" ]];
-  checkout_role
-else
-  checkout_role
-  link_playbook
-  ANSIBLE_HASH_BEHAVIOUR=merge
-  ansible-playbook .ansible-deploy.yml $@ $ARGS
-fi
-
-
-
+checkout_role
+link_playbook
+ANSIBLE_HASH_BEHAVIOUR=merge
+ansible-playbook .ansible-$ROLE_NAME.yml $@ $ARGS
