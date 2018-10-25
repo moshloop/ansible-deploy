@@ -16,10 +16,9 @@
   when: "'k8s/kustomization.yaml' | file_exists"
   tags:
     - kustomize
+  failed_when: false
 
-- debug: var=kustomize
-  tags:
-    - kustomize
+- debug: var=kustomize.stdout
 - fail:
     msg: "Kustomize failed: \n {{kustomize.stderr}}"
   when: kustomize.changed and kustomize.rc != 0
@@ -34,12 +33,9 @@
   tags:
     - kustomize
 
-# - name: Deploy specs to Kuberenetes
-#   k8s:
-#     state: present
-#     src: build/k8s.yml
-#   run_once: true
-#   delegate_to: localhost
-#   register: deployment
+- name: Deploy specs to Kuberenetes
+  local_action:  shell kubectl apply -f build/k8s.yml
+  run_once: true
+  register: deployment
 
-# - debug: var=deployment
+- debug: var=deployment
