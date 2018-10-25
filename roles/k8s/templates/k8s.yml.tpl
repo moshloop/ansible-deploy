@@ -1,4 +1,4 @@
-{% for group in (hostvars.keys() | play_groups(groups, hostvars)) %}
+{% for group in (play_hosts | play_groups(groups, hostvars)) %}
 {% if group != 'all' and group != 'k8s' %}
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
@@ -16,6 +16,9 @@ metadata:
 spec:
   replicas: {{ container.replicas | default(1) }}
   strategy: {}
+  selector:
+    matchLabels:
+      app: {{service}}
   template:
     metadata:
       labels:
@@ -123,6 +126,7 @@ apiVersion: v1
 metadata:
   name: {{service}}
 spec:
+  type: "{{container.service_type | default('ClusterIP') }}"
   selector:
     app: {{service}}
   ports:

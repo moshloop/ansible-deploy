@@ -18,7 +18,11 @@
     - kustomize
   failed_when: false
 
-- debug: var=kustomize.stdout
+- set_fact:
+    display: "{{ kustomize.stdout | default('') | debug_obj }}"
+  tags:
+    - kustomize
+
 - fail:
     msg: "Kustomize failed: \n {{kustomize.stderr}}"
   when: kustomize.changed and kustomize.rc != 0
@@ -38,4 +42,5 @@
   run_once: true
   register: deployment
 
-- debug: var=deployment
+- set_fact:
+    display: "{{ deployment.stdout  | default('')  | debug_obj }}"
