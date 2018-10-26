@@ -33,7 +33,7 @@
     path: "build/k8s.yml"
     content: "kustomize.stdout"
   when: kustomize.changed
-  check_mode: yes
+  check_mode: no
   tags:
     - kustomize
 
@@ -42,6 +42,16 @@
   failed_when: false
   run_once: true
   register: deployment
+  check_mode: no
+  when: not ansible_check_mode
+
+- name: Validate specs
+  local_action:  shell kubectl apply -f build/k8s.yml --dry-run=true
+  failed_when: false
+  run_once: true
+  register: deployment
+  check_mode: no
+  when: ansible_check_mode
 
 - set_fact:
     display: "{{ (deployment.stdout + deployment.stderr) | default('')  | debug_obj }}"
