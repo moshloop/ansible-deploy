@@ -34,6 +34,12 @@ spec:
               value: {{env[key]}}
 {% endfor %}
           image: {{_vars.docker_registry}}/{{container.image}}
+{% if commands | length > 0 %}
+          lifecycle:
+            postStart:
+              exec:
+                command: ['sh', '-c', '{{commands | join(";")}}']
+{% endif %}
           ports:
 {% for port in ports %}
             - containerPort: {{ port.to_port }}
@@ -70,13 +76,13 @@ spec:
 {% for template in templates %}
         - name: {{template | k8s_name}}
           configMap:
-            defaultMode: 0600
+            defaultMode: 0666
             name: {{template | k8s_name}}
 {% endfor %}
 {% for file in files %}
         - name: {{file | k8s_name}}
           configMap:
-            defaultMode: 0600
+            defaultMode: 0666
             name: {{file | k8s_name}}
 {% endfor %}
       restartPolicy: Always
@@ -89,7 +95,7 @@ metadata:
   name: "{{template | k8s_name}}"
 data:
   "{{template | basename }}": |-
-    {{ lookup('template', templates[template]) | indent(4) }}
+    {{ lookup('template', templates[template]) | indent(3) }}
 {% endfor %}
 {% for file in files %}
 ---
@@ -99,7 +105,7 @@ metadata:
   name: "{{file | k8s_name }}"
 data:
   "{{file | basename}}": |-
-   {{ lookup('file', files[file]) | indent(4) }}
+   {{ lookup('file', files[file]) | indent(3) }}
 {% endfor %}
 
 {% if container.labels is defined and container.labels['elb.ports'] is defined %}
