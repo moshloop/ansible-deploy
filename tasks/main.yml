@@ -54,16 +54,22 @@
 - include_role: name="{{role_path}}/roles/ssh"
   when: target == 'ansible' or target == 'ssh'
 
-- include_role: name="{{role_path}}/roles/ecs"
+- block:
+    - include_role: name="{{role_path}}/roles/ecs"
   when: target == 'ecs'
+  connection: local
   run_once: true
 
-- include_role: name="{{role_path}}/roles/k8s"
+- block:
+    - include_role: name="{{role_path}}/roles/k8s"
   when: target == 'k8s' or target == 'kubernetes'
+  connection: local
   run_once: true
 
-- include_role: name="{{role_path}}/roles/cloudinit"
+- block:
+    - include_role: name="{{role_path}}/roles/cloudinit"
   when: target == 'cloudinit'
+  connection: local
 
 - name: Running after hooks
   include: '{{item}}'
