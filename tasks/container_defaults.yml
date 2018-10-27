@@ -7,15 +7,16 @@
   loop_control:
     loop_var: port
 
-- set_fact:
+- name: Set container defaults
+  set_fact:
     mem: "{{container.mem | default('1024') }}"
     cpu: "{{container.cpu | default('1') }}"
     volumes: "{{container.volumes | default([]) }}"
-    files: "{{container.files | default({}) }}"
-    templates: "{{container.templates | default({}) }}"
+    files: "{{container.files | default(files) | default({}) }}"
+    templates: "{{container.templates | default(templates) | default({})  }}"
     service: "{{container.service | default(container.image.split(':')[0]) | basename}}"
-    env: "{{container.env | default({}) }}"
-    labels: "{{container.labels | default({}) }}"
+    env: "{{container.env | default(container.env_vars) | default(env_vars) | default({}) }}"
+    labels: "{{container.labels | default(labels) | default({}) }}"
     commands: "{{container.commands | default(commands) | default([]) }}"
 
 - set_fact:
