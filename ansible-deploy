@@ -45,6 +45,13 @@ checkout_role() {
 
   if [[ "$desired_tag" != "null" && "$desired_tag" != "" && "$desired_tag" != "$current_tag" ]]; then
     echo "Checking out $desired_tag"
+    current_base=$(git config --get remote.origin.url)
+
+    if [[ "$current_base" != $GIT_BASE* ]]; then
+        echo "Switching origin to: $GIT_BASE"
+        git remote remove origin
+        git remote add origin $GIT_BASE/ansible-${ROLE_NAME}.git
+    fi
     git fetch
     git checkout $desired_tag
   fi
