@@ -76,3 +76,8 @@ instance_volumes:
 | dev    |         |             |
 | format |         |             |
 | mount  |         |             |
+
+
+<img src="../images/ansible_icon.png"/> Implemented using [systools](https://github.com/moshloop/systools)/`bootstrap_volume` command<br>
+<img src="../images/ecs.png"  /> ✖ Not Supported <br>
+<img src="../images/k8s_icon.png"  /> ✖ Not supported on instance/group level, only container level<br>

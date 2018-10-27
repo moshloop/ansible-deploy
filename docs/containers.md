@@ -4,18 +4,21 @@
 | Argument       | Default              | Description |
 | -------------- | -------------------- | ----------- |
 | **image**        | [Required]           | Docker image to run  |
-| service | {base image name} | The name of the systemd service |
-| env     |                      | A dictionary of environment variables to pass through |
-| labels | | A dictionary of labels to add to the container |
-| docker_args |                      | Additional arguments to the docker client e.g. `-p 8080:8080` |
-| docker_opts | | Additional options to the docker client e.g. `-H unix:///tmp/var/run/docker.sock` |
+| service | {base image name} | The name of the service (e.g systemd unit name or deployment name) |
+| env     |                      | A map of environment variables to pass through |
+| labels | | A map of labels to add to the container |
+| docker_args |                      | Additional arguments to the docker client e.g. `-p 8080:8080` (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/>only) |
+| docker_opts | | Additional options to the docker client e.g. `-H unix:///tmp/var/run/docker.sock` (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only) |
 | args |                   | Additional arguments to the container |
 | volumes |                | List of volume mappings |
 | ports | | List of port mappings |
-| network | user-bridge | |
-| cpu |  | |
-| mem |  | |
-| replicas | 1 | |
+| commands | | List of commands to execute inside the container on startup (<img src="../images/k8s_icon.png" style="vertical-align: bottom"> only) |
+| files | | Map of files to mount into the container (<img src="../images/k8s_icon.png" style="vertical-align: bottom"> only) |
+| templates | | Map of templates to mount into the container (<img src="../images/k8s_icon.png" style="vertical-align: bottom">only) |
+| network | user-bridge | <img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only |
+| cpu |  | CPU limit in cores (Defaults to 1 on <img src="../images/k8s_icon.png" style="vertical-align: bottom"> ) |
+| mem |  | Memory Limit in MB. (Defaults to 1024 on <img src="../images/k8s_icon.png" style="vertical-align: bottom">) |
+| replicas | 1 | Number of instances or containers to run |
 
 !!! example "play.yml"
     ``` yaml
@@ -30,7 +33,8 @@
                  DOMAIN: localhost.com
              - image: nginx
                service: nginx2
-               docker_args: -p 8080:80
+               ports:
+                  - 8080:80
     ```
 
 ### Docker Compose
@@ -39,10 +43,11 @@ Docker compose can also be used as a source to deploy to any target. Only the at
 * ports
 * environment
 * image
-* deploy/limits
+* deploy/resources/limits
 * deploy/replicas
-* networks (Not supported on ECS)
-* ui.labels (See [Load Balancing](../../load-balancing/))
+* deploy/endpoint_mode
+* networks (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only)
+* ui.labels (See [Load Balancing](load-balancing/))
 
 !!! example "group_vars/group.yml"
 
@@ -62,11 +67,11 @@ Docker compose can also be used as a source to deploy to any target. Only the at
             limits:
               memory: 2G
         environment:
-        - TZ=Africa/Harare
+          - TZ=Africa/Harare
         ports:
-        - "8166:8166"
+          - "8166:8166"
         networks:
-        - user
+          - user
     networks:
       user:
         external:
@@ -74,7 +79,6 @@ Docker compose can also be used as a source to deploy to any target. Only the at
 
     ```
 
-
 <img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
-<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay
-
+<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay <br>
+<img src="../images/kubernetes.png" height="24" width=24 /> Converted into a K8s Deployment and Service
