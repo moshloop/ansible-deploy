@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.5">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.6">
     
     
       
@@ -641,27 +641,27 @@
 <tr>
 <td>service</td>
 <td base="base" image="image" name="name"></td>
-<td>The name of the systemd service</td>
+<td>The name of the service (e.g systemd unit name or deployment name)</td>
 </tr>
 <tr>
 <td>env</td>
 <td></td>
-<td>A dictionary of environment variables to pass through</td>
+<td>A map of environment variables to pass through</td>
 </tr>
 <tr>
 <td>labels</td>
 <td></td>
-<td>A dictionary of labels to add to the container</td>
+<td>A map of labels to add to the container</td>
 </tr>
 <tr>
 <td>docker_args</td>
 <td></td>
-<td>Additional arguments to the docker client e.g. <code>-p 8080:8080</code></td>
+<td>Additional arguments to the docker client e.g. <code>-p 8080:8080</code> (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/>only)</td>
 </tr>
 <tr>
 <td>docker_opts</td>
 <td></td>
-<td>Additional options to the docker client e.g. <code>-H unix:///tmp/var/run/docker.sock</code></td>
+<td>Additional options to the docker client e.g. <code>-H unix:///tmp/var/run/docker.sock</code> (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only)</td>
 </tr>
 <tr>
 <td>args</td>
@@ -679,24 +679,39 @@
 <td>List of port mappings</td>
 </tr>
 <tr>
+<td>commands</td>
+<td></td>
+<td>List of commands to execute inside the container on startup (<img src="../images/k8s_icon.png" style="vertical-align: bottom"> only)</td>
+</tr>
+<tr>
+<td>files</td>
+<td></td>
+<td>Map of files to mount into the container (<img src="../images/k8s_icon.png" style="vertical-align: bottom"> only)</td>
+</tr>
+<tr>
+<td>templates</td>
+<td></td>
+<td>Map of templates to mount into the container (<img src="../images/k8s_icon.png" style="vertical-align: bottom">only)</td>
+</tr>
+<tr>
 <td>network</td>
 <td>user-bridge</td>
-<td></td>
+<td><img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only</td>
 </tr>
 <tr>
 <td>cpu</td>
 <td></td>
-<td></td>
+<td>CPU limit in cores (Defaults to 1 on <img src="../images/k8s_icon.png" style="vertical-align: bottom"> )</td>
 </tr>
 <tr>
 <td>mem</td>
 <td></td>
-<td></td>
+<td>Memory Limit in MB. (Defaults to 1024 on <img src="../images/k8s_icon.png" style="vertical-align: bottom">)</td>
 </tr>
 <tr>
 <td>replicas</td>
 <td>1</td>
-<td></td>
+<td>Number of instances or containers to run</td>
 </tr>
 </tbody>
 </table>
@@ -713,7 +728,8 @@
              <span class="l l-Scalar l-Scalar-Plain">DOMAIN</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost.com</span>
          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
            <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx2</span>
-           <span class="l l-Scalar l-Scalar-Plain">docker_args</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">-p 8080:80</span>
+           <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+              <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">8080:80</span>
 </pre></div>
 
 </div>
@@ -723,10 +739,11 @@
 <li>ports</li>
 <li>environment</li>
 <li>image</li>
-<li>deploy/limits</li>
+<li>deploy/resources/limits</li>
 <li>deploy/replicas</li>
-<li>networks (Not supported on ECS)</li>
-<li>ui.labels (See <a href="../../load-balancing/">Load Balancing</a>)</li>
+<li>deploy/endpoint_mode</li>
+<li>networks (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only)</li>
+<li>ui.labels (See <a href="load-balancing/">Load Balancing</a>)</li>
 </ul>
 <div class="admonition example">
 <p class="admonition-title">group_vars/group.yml</p>
@@ -746,11 +763,11 @@
         <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
           <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2G</span>
     <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TZ=Africa/Harare</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TZ=Africa/Harare</span>
     <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&quot;8166:8166&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;8166:8166&quot;</span>
     <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
 <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">user</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">external</span><span class="p p-Indicator">:</span>
@@ -759,7 +776,8 @@
 
 </div>
 <p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
-<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay</p>
+<img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay <br>
+<img src="../images/kubernetes.png" height="24" width=24 /> Converted into a K8s Deployment and Service</p>
                 
                   
                 
@@ -831,7 +849,7 @@
       
     </div>
     
-      <script src="../assets/javascripts/application.583bbe55.js"></script>
+      <script src="../assets/javascripts/application.5e60981f.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
