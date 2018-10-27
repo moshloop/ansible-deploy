@@ -18,6 +18,7 @@
     loadbalancers: []
     mem: "{{container.mem | default(deploy.get('resources', {}).get('limits', {}).get('memory', container_default_mem)) }}"
     cpu: "{{container.cpu | default(deploy.get('resources', {}).get('limits', {}).get('cpu', container_default_cpu)) }}"
+    service_type: "{{ deploy.endpoint_mode | default('ClusterIP') }}"
     replicas: "{{ container.replicas | default(deploy.get('replicas', '1')) }}"
 
 - set_fact:
@@ -41,4 +42,4 @@
 
 - debug: var=containers verbosity=1
 - set_fact:
-    containers: "{{containers + [{'image': image,'service': service, 'labels': labels, 'cpu': cpu, 'env': env,  'mem': mem, 'docker_opts':  docker_opts,'docker_args':docker_args,'args': args,'network': network,'volumes': volumes,'ports': ports, 'replicas': replicas   }] }}"
+    containers: "{{containers + [{'image': image,'service': service, 'labels': labels, 'cpu': cpu, 'env': env,  'mem': mem, 'docker_opts':  docker_opts,'docker_args':docker_args,'args': args,'network': network,'volumes': volumes,'ports': ports, 'replicas': replicas, 'service_type': service_type   }] }}"

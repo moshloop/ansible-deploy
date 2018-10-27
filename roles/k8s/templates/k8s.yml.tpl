@@ -3,6 +3,7 @@
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
 {% set service = container.service %}
+{% set commands = container.commands | default([]) %}
 {% set env = container.env | default({}) %}
 {% set volumes = container.volumes %}
 {% set ports = container.ports  %}
@@ -132,7 +133,11 @@ apiVersion: v1
 metadata:
   name: {{service}}
 spec:
+{% if container.service_type is defined and container.service_type == 'dnsrr' %}
+  type: NodePort
+{% else %}
   type: "{{container.service_type | default('ClusterIP') }}"
+{% endif %}
   selector:
     app: {{service}}
   ports:

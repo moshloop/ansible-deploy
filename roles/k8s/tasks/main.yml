@@ -20,6 +20,7 @@
 
 - set_fact:
     display: "{{ kustomize.stdout | default('') | debug_obj }}"
+  when: kustomize.changed
   tags:
     - kustomize
 
@@ -45,6 +46,14 @@
   check_mode: no
   when: not ansible_check_mode
 
+
+- set_fact:
+    display: "{{ (deployment.stdout + deployment.stderr) | default('')  | debug_obj }}"
+  when: deployment.changed
+
+- fail: "{{deployment.stderr}}"
+  when: deployment.changed and deployment.rc != 0
+
 - name: Validate specs
   local_action:  shell kubectl apply -f build/k8s.yml --dry-run=true
   failed_when: false
@@ -55,6 +64,7 @@
 
 - set_fact:
     display: "{{ (deployment.stdout + deployment.stderr) | default('')  | debug_obj }}"
+  when: deployment.changed
 
 - fail: "{{deployment.stderr}}"
-  when: deployment.rc != 0
+  when: deployment.changed and deployment.rc != 0
