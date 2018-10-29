@@ -35,6 +35,7 @@ spec:
               value: {{env[key]}}
 {% endfor %}
           image: {{_vars.docker_registry}}/{{container.image}}
+          imagePullPolicy: Always
 {% if commands | length > 0 %}
           lifecycle:
             postStart:
