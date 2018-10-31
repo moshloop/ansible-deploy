@@ -19,8 +19,13 @@
     _env: "{{container.env | default(container.env_vars) | default(env_vars) | default({}) }}"
     _labels: "{{container.labels | default(labels) | default({}) }}"
     _commands: "{{container.commands | default(commands) | default([]) }}"
-    _image: "{{container.docker_registry | default(docker_registry)}}/{{container.image}}"
+    _image: "{{container.image}}"
+    _docker_registry: "{{container.docker_registry | default(docker_registry) }}"
 
+- name: Set docker_registry
+  set_fact:
+    _image: "{{_docker_registry}}/{{_image}}"
+  when: not _docker_registry | is_empty
 
 - name: Lookup image SHA
   set_fact:
