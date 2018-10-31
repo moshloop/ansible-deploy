@@ -16,8 +16,8 @@
     env: "{{ container.env | default({})}}"
     labels: {}
     loadbalancers: []
-    mem: "{{container.mem | default(deploy.get('resources', {}).get('limits', {}).get('memory', container_default_mem)) }}"
-    cpu: "{{container.cpu | default(deploy.get('resources', {}).get('limits', {}).get('cpu', container_default_cpu)) }}"
+    mem: "{{container.mem | default(deploy.get('resources', {}).get('limits', {}).get('memory', containers_default_mem)) }}"
+    cpu: "{{container.cpu | default(deploy.get('resources', {}).get('limits', {}).get('cpu', containers_default_cpu)) }}"
     service_type: "{{ deploy.endpoint_mode | default('ClusterIP') }}"
     replicas: "{{ container.replicas | default(deploy.get('replicas', '1')) }}"
 

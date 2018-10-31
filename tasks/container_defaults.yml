@@ -1,6 +1,7 @@
 
 - set_fact:
     _ports: []
+    force_sha: "{{container.force_sha | default(containers_force_sha) }}"
 
 - include: _ports.yml
   loop: "{{container.ports | default([]) }}"
@@ -9,18 +10,25 @@
 
 - name: Set container defaults
   set_fact:
-    mem: "{{container.mem | default('1024') }}"
-    cpu: "{{container.cpu | default('1') }}"
-    volumes: "{{container.volumes | default([]) }}"
-    files: "{{container.files | default(files) | default({}) }}"
-    templates: "{{container.templates | default(templates) | default({})  }}"
-    service: "{{container.service | default(container.image.split(':')[0]) | basename}}"
-    env: "{{container.env | default(container.env_vars) | default(env_vars) | default({}) }}"
-    labels: "{{container.labels | default(labels) | default({}) }}"
-    commands: "{{container.commands | default(commands) | default([]) }}"
+    _mem: "{{container.mem | default(containers_default_mem) }}"
+    _cpu: "{{container.cpu | default(containers_default_cpu) }}"
+    _volumes: "{{container.volumes | default([]) }}"
+    _files: "{{container.files | default(files) | default({}) }}"
+    _templates: "{{container.templates | default(templates) | default({})  }}"
+    _service: "{{container.service | default(container.image.split(':')[0]) | basename}}"
+    _env: "{{container.env | default(container.env_vars) | default(env_vars) | default({}) }}"
+    _labels: "{{container.labels | default(labels) | default({}) }}"
+    _commands: "{{container.commands | default(commands) | default([]) }}"
+    _image: "{{container.docker_registry | default(docker_registry)}}/{{container.image}}"
+
+
+- name: Lookup image SHA
+  set_fact:
+    _image: "{{_image | to_docker_image_sha }}"
+  when: force_sha == True
 
 - set_fact:
-    _container: "{{container | combine({'mem': mem, 'cpu': cpu, 'service': service, 'ports': _ports, 'volumes': volumes, 'files': files, 'templates': templates, 'env': env, 'labels': labels}) }}"
+    _container: "{{container | combine({'mem': _mem, 'cpu': _cpu, 'service': _service, 'ports': _ports, 'volumes': _volumes, 'files': _files, 'templates': _templates, 'env': _env, 'labels': _labels, 'image': _image}) }}"
 
 - set_fact:
     _containers: "{{_containers| default([]) + [_container]}}"

@@ -4,8 +4,9 @@ service_dns:
 target: ansible
 docker_compose_v3: []
 docker_compose_v2: []
-container_default_mem: 1G
-container_default_cpu: 1
+containers_default_mem: 1G
+containers_default_cpu: 1024
+containers_force_sha: False
 stack_name: "{{envFull}}"
 create_change_set: false
 timestamp: "{{lookup('pipe', 'date +\"%Y%m%dT%H%M%S\"')}}"

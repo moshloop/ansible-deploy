@@ -19,23 +19,24 @@
 | cpu |  | CPU limit in cores (Defaults to 1 on <img src="../images/k8s_icon.png" style="vertical-align: bottom"> ) |
 | mem |  | Memory Limit in MB. (Defaults to 1024 on <img src="../images/k8s_icon.png" style="vertical-align: bottom">) |
 | replicas | 1 | Number of instances or containers to run |
+| containers_force_sha | false | When specified the SHA digest for each container will be looked up at deploy time and inserted into the image url. |
 
 !!! example "play.yml"
-    ``` yaml
-    - hosts: localhost
-      roles:
-        - deploy
-      vars:
-            containers:
-             - image: nginx
-               service: nginx
-               env:
-                 DOMAIN: localhost.com
-             - image: nginx
-               service: nginx2
-               ports:
-                  - 8080:80
-    ```
+​    ``` yaml
+​    - hosts: localhost
+​      roles:
+​        - deploy
+​      vars:
+​            containers:
+​             - image: nginx
+​               service: nginx
+​               env:
+​                 DOMAIN: localhost.com
+​             - image: nginx
+​               service: nginx2
+​               ports:
+​                  - 8080:80
+​    ```
 
 ### Docker Compose
 Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:
@@ -45,7 +46,7 @@ Docker compose can also be used as a source to deploy to any target. Only the at
 * image
 * deploy/resources/limits
 * deploy/replicas
-* deploy/endpoint_mode
+* deploy/endpoint_mode (use `dnsrr` for a NodePort in k8s)
 * networks (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only)
 * ui.labels (See [Load Balancing](load-balancing/))
 
@@ -57,25 +58,25 @@ Docker compose can also be used as a source to deploy to any target. Only the at
     ```
 
 !!! example "files/docker-compose.yml"
-    ```yaml
-    version: "3"
-    services:
-      gateway:
-        image: gateway:4.1.0-SNAPSHOT
-        deploy:
-          resources:
-            limits:
-              memory: 2G
-        environment:
-          - TZ=Africa/Harare
-        ports:
-          - "8166:8166"
-        networks:
-          - user
-    networks:
-      user:
-        external:
-          name: public
+​    ```yaml
+​    version: "3"
+​    services:
+​      gateway:
+​        image: gateway:4.1.0-SNAPSHOT
+​        deploy:
+​          resources:
+​            limits:
+​              memory: 2G
+​        environment:
+​          - TZ=Africa/Harare
+​        ports:
+​          - "8166:8166"
+​        networks:
+​          - user
+​    networks:
+​      user:
+​        external:
+​          name: public
 
     ```
 
