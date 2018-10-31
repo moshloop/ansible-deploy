@@ -27,7 +27,7 @@
     _image: "{{_docker_registry}}/{{_image}}"
   when: not _docker_registry | is_empty
 
-- name: Lookup image SHA
+- name: Lookup image SHA {{_image}}
   set_fact:
     _image: "{{_image | to_docker_image_sha }}"
   when: force_sha == True
