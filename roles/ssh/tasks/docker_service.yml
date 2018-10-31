@@ -40,7 +40,7 @@
   with_items: "{{container.volumes | default([])}}"
 
 - set_fact:
-    ports: "{{ports}} -p {{item}}"
+    ports: "{{ports}} -p {{item.from_port}}:{{item.to_port}}"
   with_items: "{{container.ports | default([])}}"
 
 - name: "{{service}}"
