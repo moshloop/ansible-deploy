@@ -20,7 +20,7 @@
 
 - add_host:
     name: "{{inventory_hostname}}"
-    groups: "{{target}}"
+    groups: "{{target}},deploy"
   changed_when: false
 
 - name: Running before (run_once) hooks {{hooks}}
@@ -76,10 +76,16 @@
   vars:
     include_dir: "{{item | dirname }}"
   with_items: "{{hooks | deploy_hooks('after', False, group_names) }}"
+  tags:
+    - hooks
+    - after_hooks
 
 - name: Running after (run_once) hooks
   vars:
     include_dir: "{{item | dirname }}"
   include: '{{item}}'
   with_items: "{{hooks | deploy_hooks('after', True, group_names) }}"
+  tags:
+    - hooks
+    - after_hooks
 
