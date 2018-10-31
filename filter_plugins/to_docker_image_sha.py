@@ -1,6 +1,8 @@
 import docker
 
 def to_docker_image_sha(image):
+    if '@' in image:
+      return image
     client = docker.from_env()
     return image + '@' + client.images.get_registry_data(image).id
 
