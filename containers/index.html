@@ -713,26 +713,31 @@
 <td>1</td>
 <td>Number of instances or containers to run</td>
 </tr>
+<tr>
+<td>containers_force_sha</td>
+<td>false</td>
+<td>When specified the SHA digest for each container will be looked up at deploy time and inserted into the image url.</td>
+</tr>
 </tbody>
 </table>
 <div class="admonition example">
 <p class="admonition-title">play.yml</p>
-<div class="codehilite"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hosts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-  <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">deploy</span>
-  <span class="l l-Scalar l-Scalar-Plain">vars</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">containers</span><span class="p p-Indicator">:</span>
-         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
-           <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
-           <span class="l l-Scalar l-Scalar-Plain">env</span><span class="p p-Indicator">:</span>
-             <span class="l l-Scalar l-Scalar-Plain">DOMAIN</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost.com</span>
-         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
-           <span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx2</span>
-           <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
-              <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">8080:80</span>
-</pre></div>
-
 </div>
+<p>​    <code>yaml
+​    - hosts: localhost
+​      roles:
+​        - deploy
+​      vars:
+​            containers:
+​             - image: nginx
+​               service: nginx
+​               env:
+​                 DOMAIN: localhost.com
+​             - image: nginx
+​               service: nginx2
+​               ports:
+​                  - 8080:80
+​</code></p>
 <h3 id="docker-compose">Docker Compose</h3>
 <p>Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:</p>
 <ul>
@@ -741,7 +746,7 @@
 <li>image</li>
 <li>deploy/resources/limits</li>
 <li>deploy/replicas</li>
-<li>deploy/endpoint_mode</li>
+<li>deploy/endpoint_mode (use <code>dnsrr</code> for a NodePort in k8s)</li>
 <li>networks (<img src="../images/ansible_icon.png" style="vertical-align: bottom"/> only)</li>
 <li>ui.labels (See <a href="load-balancing/">Load Balancing</a>)</li>
 </ul>
@@ -754,27 +759,29 @@
 </div>
 <div class="admonition example">
 <p class="admonition-title">files/docker-compose.yml</p>
-<div class="codehilite"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
-<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">gateway</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">gateway:4.1.0-SNAPSHOT</span>
-    <span class="l l-Scalar l-Scalar-Plain">deploy</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2G</span>
-    <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TZ=Africa/Harare</span>
-    <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="s">&quot;8166:8166&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
-<span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">user</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">external</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+</div>
+<p>​    ```yaml
+​    version: "3"
+​    services:
+​      gateway:
+​        image: gateway:4.1.0-SNAPSHOT
+​        deploy:
+​          resources:
+​            limits:
+​              memory: 2G
+​        environment:
+​          - TZ=Africa/Harare
+​        ports:
+​          - "8166:8166"
+​        networks:
+​          - user
+​    networks:
+​      user:
+​        external:
+​          name: public</p>
+<div class="codehilite"><pre><span></span>```
 </pre></div>
 
-</div>
 <p><img src="../images/ansible.png" height="24" width=24 /> Implemented as systemd services that controls container <br>
 <img src="../images/ecs.png" height="24" width=24 /> Implemented as 1 ECS container per task per service using Weave overlay <br>
 <img src="../images/kubernetes.png" height="24" width=24 /> Converted into a K8s Deployment and Service</p>
