@@ -28,8 +28,15 @@
   when: not _docker_registry | is_empty
 
 - name: Lookup image SHA {{_image}}
-  set_fact:
-    _image: "{{_image | to_docker_image_sha }}"
+  block:
+    - docker_remote_image_facts:
+        image: "{{_image}}"
+        username: "{{ docker_username }}"
+        password: "{{ docker_password }}"
+      register: image_facts
+    - debug: var=image_facts verbosity=2
+    - set_fact:
+        _image: "{{image_facts.registry}}/{{image_facts.image}}@{{image_facts.digest}}"
   when: force_sha == True
 
 - set_fact:
