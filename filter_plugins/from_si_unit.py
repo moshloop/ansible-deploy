@@ -15,7 +15,7 @@ def from_si_unit(arg, base_uom='MB'):
   elif uom.startswith('K'):
     base = int(float(val)) * KB
   else:
-    base = int(float(val))
+    return int(float(val))
 
   if base_uom.startswith('M'):
     return base / MB
@@ -40,4 +40,4 @@ if __name__ == "__main__":
   assert from_si_unit('1G') == 1024
   assert from_si_unit('1MiB') == 1
   assert from_si_unit('1M') == 1
-  assert from_si_unit('1') == 1
+  assert from_si_unit('1024') == 1024

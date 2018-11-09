@@ -17,12 +17,9 @@
     labels: {}
     loadbalancers: []
     mem: "{{container.mem | default(deploy.get('resources', {}).get('limits', {}).get('memory', containers_default_mem)) }}"
-    cpu: "{{container.cpu | default(deploy.get('resources', {}).get('limits', {}).get('cpu', containers_default_cpu)) }}"
+    cpu: "{{container.cpu | default(deploy.get('resources', {}).get('limits', {}).get('cpu', containers_default_cpu) ) }}"
     service_type: "{{ deploy.endpoint_mode | default('ClusterIP') }}"
     replicas: "{{ container.replicas | default(deploy.get('replicas', '1')) }}"
-
-- set_fact:
-    mem: "{{ mem | from_si_unit('MB')}}"
 
 - set_fact:
     service: "{{service | split(':') | first }}"

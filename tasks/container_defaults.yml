@@ -8,6 +8,11 @@
   loop_control:
     loop_var: port
 
+# - set_fact:
+#     docker_registry_host: "{{account_id}}.dkr.ecr.{{region}}.amazonaws.com"
+#   when: target == 'ecs' and account_id is defined and docker_registry_host is not defined or docker_registry_host | is_empty
+
+- debug: msg="{{container.mem | default('None')}}/{{container.cpu | default('None')}}"
 - name: Set container defaults
   set_fact:
     _mem: "{{container.mem | default(containers_default_mem) }}"
@@ -20,7 +25,12 @@
     _labels: "{{container.labels | default(labels) | default({}) }}"
     _commands: "{{container.commands | default(commands) | default([]) }}"
     _image: "{{container.image}}"
-    _docker_registry: "{{container.docker_registry | default(docker_registry) }}"
+    _docker_registry: "{{container.docker_registry | default(docker_registry) | default('') }}"
+
+- name: Setting correct Mem/CPU units of measure
+  set_fact:
+    _mem: "{{ _mem | from_si_unit }}"
+    _cpu: "{{ _cpu | int * 1024 }}"
 
 - name: Set docker_registry
   set_fact:
@@ -41,6 +51,9 @@
 
 - set_fact:
     _container: "{{container | combine({'mem': _mem, 'cpu': _cpu, 'service': _service, 'ports': _ports, 'volumes': _volumes, 'files': _files, 'templates': _templates, 'env': _env, 'labels': _labels, 'image': _image}) }}"
+
+- debug: msg="{{_container.service}}= {{_container.mem}}/{{_container.cpu}}"
+
 
 - set_fact:
     _containers: "{{_containers| default([]) + [_container]}}"

@@ -1,7 +1,7 @@
   {{elb_name }}LB:
     Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     Properties:
-      Name: "LB-{{elb_name}}"
+      Name: "LB-{{elb_name}}-{{cluster_name}}"
       Scheme:  {{ elb.scheme | default('internal') }}
       SecurityGroups:
 {% for id in elb['security-groups'] | default(['default']) %}
@@ -51,7 +51,7 @@
 {% endif %}
       Matcher:
         HttpCode: {{ elb['success-codes'] | default('200')}}
-      Name: "LB-{{elb_name }}-{{target_port}}"
+      Name: "LB-{{elb_name }}-{{cluster_name}}-{{target_port}}"
       Port: {{target_port}}
       Protocol: "{{target_type}}"
       VpcId: "{{vpc}}"
@@ -60,7 +60,7 @@
     Type: "AWS::Route53::RecordSet"
     Properties:
       HostedZoneId: "{{domain_id}}"
-      Name: "{{elb_name}}.{{domain}}"
+      Name: "{{elb_name}}.{{cluster_name}}.{{domain}}"
       Type: A
       AliasTarget:
         DNSName: !Join ["", [!GetAtt "{{elb_name}}LB.DNSName", "."]]

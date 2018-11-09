@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-
+{% if update_ecs_asg %}
   Logs:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -12,10 +12,12 @@ Resources:
     Properties:
       ClusterName: "{{cluster_name}}"
 
+
   ECSAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
         VPCZoneIdentifier:
+
 {% for subnet in subnets %}
           - {{subnet}}
 {% endfor %}
@@ -168,21 +170,23 @@ Resources:
                             files:
                                 - /etc/awslogs/awslogs.conf
                                 - /etc/awslogs/awscli.conf
+{% endif %}
 
 {% for group in hostvars.keys() | play_groups(groups, hostvars) %}
 {% set _vars = hostvars[groups[group][0]] %}
 {% for container in _vars['containers'] | default([]) %}
+{{ container | debug_obj}}
 {% set service = container.service  %}
   {{service | cf_name }}:
       Type: AWS::ECS::TaskDefinition
       Properties:
-          Cpu: "{{ 1024 * container.cpu | int }}"
+          Cpu: "{{ container.cpu | int }}"
           Memory: "{{ container.mem  }}"
           NetworkMode: bridge
           ExecutionRoleArn: arn:aws:iam::{{account_id}}:role/ECSTaskExecutionRole
           ContainerDefinitions:
             - Name: {{service }}
-              Image: "{{_vars.docker_registry}}/{{container.image}}"
+              Image: "{{container.image}}"
               Essential: true
               LogConfiguration:
                 LogDriver: awslogs
@@ -198,10 +202,12 @@ Resources:
               PortMappings:
 
 {% for port in container.ports %}
-                - ContainerPort: "{{ port.to_port }}"
-                  HostPort: "{{ port.from_port }}"
+                - ContainerPort: "{{ port.to_port | default(port) }}"
+                  HostPort: "{{ port.from_port | default(port) }}"
 {% endfor %}
+{% if container.env | length > 0 %}
               Environment:
+{% endif %}
 {% for key in container.env %}
                 - Name: {{key}}
                   Value: {{container.env[key]}}
@@ -214,7 +220,7 @@ Resources:
         Cluster: !Ref Cluster
         TaskDefinition: !Ref "{{service | cf_name }}"
         DesiredCount: "{{ container.replicas | default(1) }}"
-{% if container.labels['elb.ports'] is defined %}
+{% if container.labels is defined and container.labels['elb.ports'] is defined %}
 {% set elb = container.labels | sub_map('elb.') %}
 {% set port = elb.ports | split(':') | first %}
 {% set target_port = elb.ports | split(':') | last  %}

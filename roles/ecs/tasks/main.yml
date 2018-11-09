@@ -1,6 +1,3 @@
-- set_fact:
-    docker_registry_host: "{{account_id}}.dkr.ecr.{{region}}.amazonaws.com"
-  when: docker_registry_host | is_empty
 
 - include: aws_lookups.yml
 
@@ -40,6 +37,7 @@
 - name: deploy stack {{cluster_name}}
   run_once: true
   cloudformation:
+    disable_rollback: true
     stack_name: "{{cluster_name}}"
     create_changeset: "{{create_change_set}}"
     state: "present"
