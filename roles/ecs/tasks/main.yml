@@ -37,7 +37,7 @@
 - name: deploy stack {{cluster_name}}
   run_once: true
   cloudformation:
-    disable_rollback: true
+    disable_rollback: "{{cluster_disable_rollback}}"
     stack_name: "{{cluster_name}}"
     create_changeset: "{{create_change_set}}"
     state: "present"
