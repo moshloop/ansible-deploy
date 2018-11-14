@@ -40,7 +40,3 @@ def main():
 
 
     module.exit_json(changed=False)
-
-
-if __name__ == '__main__':
-    install_role("test", "https://github.com/moshloop/ansible-extras.git?ref=758c5255864a43aa252456c5a0c8b14162fc77bd")
