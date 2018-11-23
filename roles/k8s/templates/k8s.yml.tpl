@@ -51,7 +51,7 @@ spec:
               cpu: 100m
               memory: "{{ container.mem | int }}Mi"
             limits:
-              cpu: "{{ 1024 * (container.cpu) | int }}m"
+              cpu: "{{ container.cpu | int }}m"
               memory: "{{ container.mem   | int }}Mi"
 
           volumeMounts:

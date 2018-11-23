@@ -30,7 +30,7 @@
 - name: Setting correct Mem/CPU units of measure
   set_fact:
     _mem: "{{ _mem | from_si_unit }}"
-    _cpu: "{{ _cpu | int * 1024 }}"
+    _cpu: "{{ (_cpu | float) * 1000 }}"
 
 - name: Set docker_registry
   set_fact:

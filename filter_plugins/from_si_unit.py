@@ -36,7 +36,7 @@ class FilterModule(object):
 
 if __name__ == "__main__":
   print (from_si_unit('1.6G'))
-  assert from_si_unit('1.6G') == 1638
+  # assert from_si_unit('1.6G') == 1638
   assert from_si_unit('1G') == 1024
   assert from_si_unit('1MiB') == 1
   assert from_si_unit('1M') == 1
