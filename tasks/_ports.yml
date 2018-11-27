@@ -1,5 +1,0 @@
-- set_fact:
-    from_port: "{{port.split(':') | first}}"
-    to_port: "{{port.split(':') | last}}"
-- set_fact:
-    _ports: "{{_ports + [{'from_port': from_port, 'to_port': to_port}] }}"

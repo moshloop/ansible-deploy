@@ -3,16 +3,20 @@
 
 - debug: var=containers verbosity=2
 
-- template:
-    src: k8s.yml.tpl
+- shell: smarti k8s spec -i {{inventory_dir}} -v
+  check_mode: no
+  register: smarti
+
+- debug: msg="{{smarti.stderr | debug_obj}} {{smarti.rc}}"
+
+- copy:
     dest: build/k8s.yml
-  register: build
+    content: "{{smarti.stdout}}"
   check_mode: no
 
 - name: Kustomize
   local_action: shell kustomize build k8s
   register: kustomize
-  always_run: yes
   when: "'k8s/kustomization.yaml' | file_exists"
   tags:
     - kustomize
@@ -21,6 +25,7 @@
 - set_fact:
     display: "{{ kustomize.stdout | default('') | debug_obj }}"
   when: kustomize.changed
+  run_once: true
   tags:
     - kustomize
 
@@ -35,6 +40,7 @@
     content: "kustomize.stdout"
   when: kustomize.changed
   check_mode: no
+  run_once: true
   tags:
     - kustomize
 

@@ -17,7 +17,6 @@
     - always
   run_once: true
 
-
 - add_host:
     name: "{{inventory_hostname}}"
     groups: "{{target}},deploy"
@@ -35,19 +34,6 @@
     include_dir: "{{item | dirname }}"
   include_tasks: '{{item}}'
   with_items: "{{hooks | deploy_hooks('before', False, group_names) }}"
-
-- include: parse_docker_compose_v3.yml
-  with_items: "{{docker_compose_v3}}"
-
-- set_fact:
-    _containers: []
-- include: container_defaults.yml
-  loop: "{{containers}}"
-  loop_control:
-    loop_var: container
-
-- set_fact:
-    containers: "{{_containers}}"
 
 - debug: msg="{{role_path}}" verbosity=1
 
