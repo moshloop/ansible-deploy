@@ -3,7 +3,7 @@
 
 - debug: var=containers verbosity=2
 
-- shell: smarti k8s spec -i {{inventory_dir}} -v
+- shell: smarti k8s spec -i {{inventory_dir}} {{smarti_options | default('-v') }}
   check_mode: no
   register: smarti
 
