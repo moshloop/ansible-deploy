@@ -62,7 +62,7 @@
 
 - name: Execute commands
   shell: "{{item}}"
-  with_items: "{{commands}}"
+  with_items: "{{commands | flatten }}"
   when: commands is defined
 
 - name: Installing systemd based docker services

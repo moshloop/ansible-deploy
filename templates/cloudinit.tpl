@@ -64,14 +64,14 @@ write_files:
 {% endfor %}
 {% if aws_bootstrap is defined %}
         /usr/bin/aws_environment_updater
-        . /etc/environment
+        set -a; source /etc/environment; set +a
         aws configure set region $AWS_REGION
 {% endif %}
         echo {{inventory_hostname | lower}}.{{internal_domain}} > /etc/hostname
         hostnamectl set-hostname --static {{inventory_hostname | lower}}.{{internal_domain}}
 
-{% for cmd in commands | default([]) %}
-        {{cmd}}
+{% for cmd in commands | default([]) | flatten %}
+        {{cmd | indent(8) }}
 {% endfor %}
 {% for cmd in phone_home | default([]) %}
         {{cmd}}
