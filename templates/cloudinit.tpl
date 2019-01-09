@@ -62,11 +62,6 @@ write_files:
         echo {{key}}={{env_vars[key]}} >> /etc/environment
 {% endif %}
 {% endfor %}
-{% if aws_bootstrap is defined %}
-        /usr/bin/aws_environment_updater
-        set -a; source /etc/environment; set +a
-        aws configure set region $AWS_REGION
-{% endif %}
         echo {{inventory_hostname | lower}}.{{internal_domain}} > /etc/hostname
         hostnamectl set-hostname --static {{inventory_hostname | lower}}.{{internal_domain}}
 
