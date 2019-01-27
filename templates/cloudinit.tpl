@@ -21,6 +21,11 @@ write_files:
       encoding: b64
       content: {{ lookup('file', files[file]) | b64encode }}
 {% endfor %}
+{% for template in templates | default({}) %}
+    - path: {{template}}
+      encoding: b64
+      content: {{ lookup('template', templates[template]) | b64encode }}
+{% endfor %}
     - path: /usr/bin/bootstrap_volumes.sh
       permissions: '0755'
       content: |
