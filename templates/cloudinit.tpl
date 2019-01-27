@@ -63,7 +63,8 @@ write_files:
 {% endif %}
 {% endfor %}
         echo {{inventory_hostname | lower}}.{{internal_domain}} > /etc/hostname
-        hostnamectl set-hostname --static {{inventory_hostname | lower}}.{{internal_domain}}
+        hostnamectl set-hostname --static --transient {{inventory_hostname | lower}}.{{internal_domain}}
+        sed -i 's|127.0.1.1.*|127.0.1.1 {{inventory_hostname | lower}}|' /etc/hosts
 
 {% for cmd in commands | default([]) | flatten %}
         {{cmd | indent(8) }}
