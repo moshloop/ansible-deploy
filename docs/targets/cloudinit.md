@@ -8,7 +8,7 @@ The cloudinit target will generate a config file (`build/{{inventory_hostname}}.
 | -------------- | ------------------------------ | ----------------------------------- |
 | files          | Map of files to copy           | Yes                                  |
 | templates      | Map of templates to render     | Yes                                   |
-| containers     | List of containers to exectute | ✖           |
+| containers     | List of containers to exectute | Yes            |
 | load_balancers | List of load balancers         | ✖     |
 | commands       | List of commands to execute.   | Yes                                  |
 | mounts         | Map of NFS mounts              | Yes                                   |
