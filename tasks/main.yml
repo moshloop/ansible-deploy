@@ -7,6 +7,8 @@
     environment: "{{ environment | default({}) }}"
     env_vars: "{{ env_vars | default({}) }}"
     domain: "{{ domain | default('local') }}"
+  tags:
+    - always
     # internal_domain: "{{ internal_domain | default(domain) | default('local')}}"
 
 - file:
@@ -21,24 +23,35 @@
     name: "{{inventory_hostname}}"
     groups: "{{target}},deploy"
   changed_when: false
+  tags:
+    - always
 
 - name: Running before (run_once) hooks {{hooks}}
   include_tasks: '{{item}}'
   vars:
     include_dir: "{{item | dirname }}"
   run_once: true
+  tags:
+    - hooks
+    - before_once_hooks
   with_items: "{{hooks | deploy_hooks('before', True, group_names) }}"
 
 - name: Running before hooks
   vars:
     include_dir: "{{item | dirname }}"
   include_tasks: '{{item}}'
+  tags:
+    - hooks
+    - before_hooks
+    - 
   with_items: "{{hooks | deploy_hooks('before', False, group_names) }}"
 
 - debug: msg="{{role_path}}" verbosity=1
 
 - include_role: name="{{role_path}}/roles/ssh"
   when: target == 'ansible' or target == 'ssh'
+  tags: 
+    - containers
 
 - block:
     - include_role: name="{{role_path}}/roles/ecs"
@@ -73,5 +86,5 @@
   with_items: "{{hooks | deploy_hooks('after', True, group_names) }}"
   tags:
     - hooks
-    - after_hooks
+    - after_once_hooks
 

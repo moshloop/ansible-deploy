@@ -54,6 +54,5 @@
 
 - debug: msg="{{_container.service}}= {{_container.mem}}/{{_container.cpu}}"
 
-
 - set_fact:
     _containers: "{{_containers| default([]) + [_container]}}"

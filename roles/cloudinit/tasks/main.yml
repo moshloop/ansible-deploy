@@ -4,6 +4,12 @@
 
   - file: path="{{inventory_dir}}/build/" state=directory
 
+  - name: Installing systemd based docker services
+    include_tasks: _container.yml
+    with_items: "{{containers}}"
+    loop_control:
+      loop_var: container
+
   - name: rendering user-data for {{inventory_hostname}}
     local_action: template src="cloudinit.tpl" dest="{{inventory_dir}}/build/{{inventory_hostname}}.txt"
     when: os is not defined or os != 'coreos'

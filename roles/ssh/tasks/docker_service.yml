@@ -7,21 +7,37 @@
     network: "{{container.network | default(network_name) | default('user-bridge') }}"
     volumes: ""
     ports: ""
+    networks: ""
+  tags: 
+    - containers
 
 - name: Create user-defined network {{network}}
   docker_network:
     name: "{{network}}"
+  tags: 
+    - containers
+  when: network != 'default'
+
+- set_fact:
+    networks: " --network {{network}}"
+  tags: 
+    - containers
+  when: network != 'default'
 
 - set_fact:
     service: "{{service | split(':') | first }}"
-
+  tags: 
+    - containers
 - debug:
     msg: "{{service}}: {{image}}"
-
+  tags: 
+    - containers
 - file:
     name: /etc/environment.{{service}}
     state: touch
   changed_when: false
+  tags: 
+    - containers
 
 - name: Creating /etc/environment.{{service}}
   copy:
@@ -34,44 +50,59 @@
       {{k}}={{ container.environment[k] }}
       {% endfor %}
   register: env
+  tags: 
+    - containers
 
 - set_fact:
     volumes: "{{volumes}} -v {{item}}"
   with_items: "{{container.volumes | default([])}}"
+  tags: 
+    - containers
 
 - set_fact:
     ports: "{{ports}} -p {{item.from_port}}:{{item.to_port}}"
   with_items: "{{container.ports | default([])}}"
+  tags: 
+    - containers
 
 - name: "{{service}}"
   systemd_service:
     Name: "{{service}}"
-    ExecStart: /usr/bin/docker {{docker_opts}} run --rm --name {{service}} --env-file /etc/environment.{{service}} {{docker_args}} {{volumes}} --network {{network}} {{ports}} {{image}} {{args}}
+    ExecStart: /usr/bin/docker {{docker_opts}} run --rm --name {{service}} --env-file /etc/environment.{{service}} {{docker_args}} {{volumes}} {{networks}} {{ports}} {{image}} {{args}}
     UnitArgs:
       After: docker.service
       Wants: docker.service
     ServiceArgs:
       RestartSec: 31
   register: systemd_service
+  tags: 
+    - containers
 
 - systemd:
     name: docker
     enabled: yes
     state: started
   failed_when: false # docker is not necessarily running local
+  tags: 
+    - containers
 
 - systemd:
     name: "{{service}}"
     enabled: yes
     daemon_reload: true
+  tags: 
+    - containers
 
 - systemd:
     name: "{{service}}"
     state: started
     daemon_reload: true
-
+  tags: 
+    - containers
 - systemd:
     name: "{{service}}"
     state: restarted
     daemon_reload: true
   when: systemd_service.changed or env.changed
+  tags: 
+    - containers

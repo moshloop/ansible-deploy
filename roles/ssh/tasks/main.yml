@@ -14,24 +14,33 @@
     state: directory
     path: "{{item.key | dirname}}"
   with_dict: "{{files}}"
+  tags:
+    - files
 
 - name: Copy vaulted files
   copy:
     dest: "{{item.key}}"
     src: "{{item.value}}"
   with_dict: "{{files | default({})}}"
+  tags:
+    - files
 
 - name: Create template directories
   file:
     state: directory
     path: "{{item.key | dirname}}"
   with_dict: "{{templates}}"
+  tags:
+    - files
 
 - name: Copy templated files
   template:
     dest: "{{item.key}}"
     src: "{{item.value}}"
   with_dict: "{{templates }}"
+  tags:
+    - files
+    
 
 - name: Create mount points
   file:
@@ -59,6 +68,8 @@
 - name: Save environment variables
   include: environment.yml
   with_dict: "{{env_vars}}"
+  tags:
+    - always
 
 - name: Execute commands
   shell: "{{item}}"
@@ -70,3 +81,5 @@
   with_items: "{{containers}}"
   loop_control:
     loop_var: container
+  tags:
+    - containers
