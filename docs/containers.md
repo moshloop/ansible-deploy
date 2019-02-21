@@ -22,21 +22,22 @@
 | containers_force_sha | false | When specified the SHA digest for each container will be looked up at deploy time and inserted into the image url. |
 
 !!! example "play.yml"
-​    ``` yaml
-​    - hosts: localhost
-​      roles:
-​        - deploy
-​      vars:
-​            containers:
-​             - image: nginx
-​               service: nginx
-​               env:
-​                 DOMAIN: localhost.com
-​             - image: nginx
-​               service: nginx2
-​               ports:
-​                  - 8080:80
-​    ```
+
+  ``` yaml
+   -  hosts: localhost
+      roles:
+        - deploy
+      vars:
+        containers:
+        - image: nginx
+          service: nginx
+          env:
+            DOMAIN: localhost.com
+        - image: nginx
+          service: nginx2
+          ports:
+          - 8080:80
+  ```
 
 ### Docker Compose
 Docker compose can also be used as a source to deploy to any target. Only the attributes listed below are supported:
@@ -58,25 +59,25 @@ Docker compose can also be used as a source to deploy to any target. Only the at
     ```
 
 !!! example "files/docker-compose.yml"
-​    ```yaml
-​    version: "3"
-​    services:
-​      gateway:
-​        image: gateway:4.1.0-SNAPSHOT
-​        deploy:
-​          resources:
-​            limits:
-​              memory: 2G
-​        environment:
-​          - TZ=Africa/Harare
-​        ports:
-​          - "8166:8166"
-​        networks:
-​          - user
-​    networks:
-​      user:
-​        external:
-​          name: public
+    ```yaml
+    version: "3"
+    services:
+     gateway:
+       image: gateway:4.1.0-SNAPSHOT
+       deploy:
+         resources:
+           limits:
+             memory: 2G
+       environment:
+         - TZ=Africa/Harare
+       ports:
+         - "8166:8166"
+       networks:
+         - user
+    networks:
+     user:
+       external:
+         name: public
 
     ```
 
