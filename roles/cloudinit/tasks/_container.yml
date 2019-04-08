@@ -1,0 +1,63 @@
+- set_fact:
+    image: "{{ container.image }}"
+    service: "{{ container.service | default(container.image | basename) }}"
+    docker_opts: "{{ container.docker_opts | default('')}}"
+    docker_args: "{{ container.docker_args | default('')}}"
+    args: "{{ container.args | default('')}}"
+    network: "{{container.network | default(network_name) | default('') }}"
+    _volumes: ""
+    ports: ""
+
+- set_fact:
+    service: "{{service | split(':') | first }}"
+
+- set_fact:
+    _volumes: "{{_volumes}} -v {{item}}"
+  with_items: "{{container.volumes | default([])}}"
+
+- set_fact:
+    ports: "{{ports}} -p {{item.from_port}}:{{item.to_port}}"
+  with_items: "{{container.ports | default([])}}"
+
+- debug:
+    msg: "{{service}}: {{image}}"
+
+- file:
+    name: build/environment.{{service}}
+    state: touch
+  changed_when: false
+
+- name: Creating /etc/environment.{{service}}
+  copy:
+    dest: build/environment.{{service}}
+    content: |
+      generated_by=ansible-deploy
+      {% for k in container.env | default({}) %}
+      {{k}}={{ container.env[k] }}
+      {% endfor %}
+      {% for k in container.environment | default({}) %}
+      {{k}}={{ container.environment[k] }}
+      {% endfor %}
+  register: env
+
+- name: Create .service
+  copy:
+    dest: build/{{service}}.service
+    content: |
+      [Unit]
+      Wants=docker.service
+      After=docker.service
+
+      [Service]
+      EnvironmentFile=/etc/environment.{{service}}
+      ExecStart=/usr/bin/docker {{docker_opts}} run --rm --name {{service}} --env-file /etc/environment.{{service}} {% if not network | is_empty %}--network={{network}}{% endif %} {{docker_args}} {{_volumes}} {{ports}} {{image}} {{args}}
+      Restart=on-failure
+      RestartSec=30
+
+      [Install]
+      WantedBy=multi-user.target
+
+- set_fact:
+    files: "{{ files | combine({\"/etc/environment.\" + service: \"build/environment.\" + service }) }}"
+- set_fact:
+    files: "{{ files | combine({\"/etc/systemd/system/\" + service + \".service\": \"build/\" + service + \".service\" }) }}"
