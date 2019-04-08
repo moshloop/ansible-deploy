@@ -77,26 +77,23 @@ write_files:
 {% endfor %}
         echo {{inventory_hostname | lower}}.{{internal_domain}} > /etc/hostname
         hostnamectl set-hostname --static --transient {{inventory_hostname | lower}}.{{internal_domain}}
-        sed -i 's|127.0.1.1.*|127.0.1.1 {{inventory_hostname | lower}}|' /etc/hosts
-
+        sed -i "s|127.0.1.1.*|127.0.1.1 $(hostname)|" /etc/hosts
+        sed -i "s|127.0.0.1.*|127.0.0.1 $(hostname)|" /etc/hosts
 {% for cmd in pre_commands | default([]) | flatten %}
         {{cmd | indent(8) }}
 {% endfor %}
-
 {% for container in containers | default([]) %}
 {{ container | debug_obj }}
 {% set service = container.service | default(container.image | basename) | split(':') | first %}
         systemctl enable {{service }}
         systemctl start {{service }}
 {% endfor %}
-
 {% for cmd in commands | default([]) | flatten %}
         {{cmd | indent(8) }}
 {% endfor %}
 {% for cmd in phone_home | default([]) %}
         {{cmd}}
 {% endfor %}
-
 runcmd:
 {% for pkg in packages | default([]) %}
     - [ cloud-init-per, instance, install-{{pkg | basename | splitext | first}}, sh, "-c", "/usr/bin/rpm -U {{pkg}}"]
