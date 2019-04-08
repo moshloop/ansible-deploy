@@ -2,6 +2,7 @@
 preserve_hostname: true
 package_update: false
 hostname: {{inventory_hostname | lower}}
+{{ cloud_init | default('')}}
 {% if users is defined and users | length > 0 %}
 users:
 {% for user in users %}
