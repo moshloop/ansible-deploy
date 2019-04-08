@@ -16,6 +16,13 @@ users:
 {% endif %}
 
 write_files:
+{% if sysctls is defined %}
+    - path: /etc/sysctl.d/100-cloud-init.conf
+      content:
+{% for sysctl in sysctls %}
+        {{sysctl}}={{sysctls[sysctl]}}
+{% endfor %}
+{% endif %}
 {% for file in files %}
     - path: {{file}}
       encoding: b64
