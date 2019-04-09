@@ -1,3 +1,14 @@
+  - name: Include group vaulted files
+    include_vars:
+      dir: "{{playbook_dir}}/vault"
+      extensions: ['']
+      files_matching: "{{item}}"
+    with_items: "{{group_names}}"
+    when: " (playbook_dir + '/vault') | dir_exists"
+    delegate_to: localhost
+    tags:
+      - always
+
   - debug: var=users verbosity=1
   - debug: var=commands verbosity=1
   - debug: var=volumes verbosity=1
