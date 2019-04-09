@@ -17,7 +17,7 @@ users:
 {% endif %}
 
 write_files:
-{% if sysctls is defined %}
+{% if sysctls is defined and sysctls | length > 0 %}
     - path: /etc/sysctl.d/100-cloud-init.conf
       content:
 {% for sysctl in sysctls %}
@@ -44,7 +44,7 @@ write_files:
               rpm -i https://github.com/moshloop/systools/releases/download/3.1/systools-3.1-1.x86_64.rpm
           fi
 
-          if [[ -e /sbin/mkfs.xfs ]]; then
+          if [[ ! -e /sbin/mkfs.xfs ]]; then
             echo "xfs not installed, installing..."
             yum install -y xfsprogs xfsdump
           fi
